@@ -1,0 +1,45 @@
+//2.b
+void DList::exchange(int a, int b)
+{
+	if(a==b)
+		return;
+	DListNode* nodeA, * nodeB;
+	nodeA = findNodePtr(a);
+	nodeB = findNodePtr(b);
+	if (nodeA == nullptr || nodeB == nullptr) return;
+	if (nodeA == head)
+	{
+		head = nodeB;
+	}
+	// čvor "b" je glava liste, menjamo glavu na čvor "a"
+	else if (nodeB == head)
+	{
+		head = nodeA;
+	}
+	DListNode* prevA = nodeA->prev;
+	DListNode* nextA = nodeA->next;
+	DListNode* prevB = nodeB->prev;
+	DListNode* nextB = nodeB->next;
+	if (nextA == nodeB)
+	{
+		nodeA->prev = nodeB;
+		nodeA->next = nextB;
+		nextB->prev = nodeA;
+		nodeB->prev = prevA;
+		nodeB->next = nodeA;
+		if (prevA != nullptr) prevA->next = nodeB;
+		if (nextB != nullptr) nextB->prev = nodeA;
+	}
+	// ako nisu susedni
+	else
+	{
+		nodeA->prev = prevB;
+		nodeA->next = nextB;
+		nodeB->prev = prevA;
+		nodeB->next = nextA;
+		if (prevA != nullptr) prevA->next = nodeB;
+		if (nextA != nullptr) nextA->prev = nodeB;
+		if (prevB != nullptr) prevB->next = nodeA;
+		if (nextB != nullptr) nextB->prev = nodeA;
+	}
+}
