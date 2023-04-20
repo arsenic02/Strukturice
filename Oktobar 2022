@@ -1,0 +1,23 @@
+//1. zadatak
+int LList::MoveHigher(int value)
+{
+	LListNode* tmp = head->next;//ne mora da krece od head, moze da krece posle head-a jer je on svakako na pocetku liste
+	LListNode* prev = head;
+	
+	while (tmp != nullptr)
+	{
+			if (tmp->info > value)
+			{
+				prev->next = tmp->next;
+				tmp->next = head;
+				head = tmp;
+				tmp = prev->next;
+			}
+			else
+			{
+				prev = prev->next;
+				tmp = tmp->next;
+			}
+	}
+	return 0;
+}
