@@ -1,0 +1,36 @@
+void LList::MoveMinToHead(LListNode* start)//radi
+{
+	LListNode* i = start;
+	LListNode* j = i->next;
+	LListNode* minNode = i;
+	while (j != nullptr)
+	{
+		if (j->info < minNode->info)
+		{
+			minNode = j;
+		}
+		j = j->next;
+	}
+	if (minNode != start)
+	{
+		LListNode* tmp = start;
+		while (tmp->next != minNode)
+		{
+			tmp = tmp->next;
+		}
+		tmp->next = minNode->next;
+		minNode->next = start;
+		head = minNode;
+	}
+}
+
+void LList::SortList()//nesto nece
+{
+	LListNode* current = head->next;
+	while (current != nullptr && current->next != nullptr)//2. uslov da se ne sortira zadnji element
+	{
+		MoveMinToHead(current);
+		current = current->next;
+		LList::printAll();
+	}
+}
