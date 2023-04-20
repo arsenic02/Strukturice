@@ -1,0 +1,27 @@
+///////    1.
+LList* LList::SplitOrMove()
+{
+	LList* novaLista = new LList();
+	LListNode* tmp = head;
+	LListNode* tmp1;
+	while (tmp != nullptr && tmp->next!=nullptr )
+	{
+		tmp1 = tmp->next;
+		while ( tmp1!=nullptr && tmp1->next!=nullptr)
+		{
+			if ((tmp->info) == (tmp1->info))
+				break;
+			tmp1 = tmp1->next;
+		}
+		if ((tmp->info) == (tmp1->info) && tmp1!=nullptr)
+		{
+			novaLista->addToHead(tmp1->info);
+		}
+		else
+			if(!novaLista->isInList(tmp->info))
+			novaLista->addToHead(tmp->info);
+		tmp = tmp->next;
+	}
+	return novaLista;
+}
+//////////////////////////////////////////////////////////////////////////////
