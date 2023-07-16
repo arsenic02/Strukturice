@@ -30,5 +30,7 @@ bool LList::moveSectionToHead(int start, int end)//jun2 2023 1. zad
 		return false;
 }
 /*
-
+napravi metodu koaj u jednostrukkoj lancanoj listi pronalazi prvo pojavljivanje podliste koja pocinje cvorom start i
+zavrsava se cvorom end i premesta je na pocetak liste, nije dozvoljeno koristiti podrazumevane metode implementacije liste.
+Vodi racuna o efikasnosti
 */
