@@ -1,0 +1,34 @@
+bool LList::moveSectionToHead(int start, int end)//jun2 2023 1. zad
+{
+	if (isInList(start) && isInList(end))
+	{
+		LListNode* pStart = head;
+		LListNode* oldStart = head;//cuva pointer na prvi cvor pre upotrebe metode
+		LListNode* prevPStart = head;//pointer pre cvora sa start
+		
+
+		while (pStart->info != start)
+		{
+			pStart = pStart->next;
+		}
+		while (prevPStart->next->info != pStart->info && prevPStart->next != nullptr)
+		{
+			prevPStart = prevPStart->next;
+		}
+		head = pStart;//pomera se podlista na pocetak
+		LListNode* pEnd = pStart;//krece od starta
+
+		while (pEnd->info != end)
+		{
+			pEnd = pEnd->next;
+		}
+		prevPStart->next = pEnd->next;
+		pEnd->next = oldStart;//poslednji element podliste pokazuje na stari pocetak liste
+		return true;
+	}
+	else
+		return false;
+}
+/*
+
+*/
