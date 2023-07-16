@@ -1,0 +1,25 @@
+void LList::moveForward(int el)
+{
+	if (isInList(el) && head->info != el)
+	{
+		LListNode* ptr = head;
+		while (ptr->info != el)
+		{
+			ptr = ptr->next;
+		}
+	}
+	else
+		throw new exception("Ne postoji cvor sa zadatim elementom!");
+	LListNode* tmp = head->next;
+	LListNode* prev = head;
+	LListNode* prevPrev = nullptr;
+	while (tmp->info != el)
+	{
+		tmp = tmp->next;
+		prevPrev = prev;
+		prev = prev->next;
+	}
+	prev->next = tmp->next;
+	tmp->next=prev;
+	prevPrev->next = tmp;
+}
