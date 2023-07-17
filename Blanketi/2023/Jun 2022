@@ -1,0 +1,33 @@
+//1.
+void LList::GroupElements()
+{
+	LListNode* ptr1 = head;
+	LListNode* ptr2 = ptr1->next;
+	LListNode* savePtr2;
+	LListNode* savePtr1Next;
+	LListNode* prevPtr2;
+	while (ptr1 != nullptr )
+	{
+		while (ptr2 != nullptr && ptr1->info != (ptr2->info))//nema potrebe za prelancavanjem ako su u listi vec isti elementi jedni pored drugih
+		{
+			ptr2 = ptr2->next;
+		}
+		prevPtr2 = ptr1;
+		while (prevPtr2->next != ptr2)
+		{
+			prevPtr2 = prevPtr2->next;
+		}
+		if (ptr2!=nullptr && ptr1->info == ptr2->info)//proverava se razlog izlaska iz petlje
+		{
+			savePtr2 = ptr2;
+			prevPtr2->next = savePtr2->next;
+			savePtr1Next = ptr1->next;//cuva se ptr1 next
+			ptr1->next = ptr2;//ptr1 pokazuje na svoj duplikat
+			ptr1->next->next = savePtr1Next;//duplikat pokazuje na sledeci cvor koji je bio sledbenik ptr1
+			
+		}
+		ptr1 = ptr1->next;
+		if(ptr1!=nullptr)
+			ptr2 = ptr1->next;
+	}
+}
