@@ -1,0 +1,78 @@
+//jun2 2022 
+//lepo stavlja u novu listu duplikate, ali ne radi najbolje brisanje
+int LList::Duplikat(int el)
+{
+	int brojac = 0;
+	LListNode* ptr = head;
+	while (ptr!=nullptr && brojac<=2)
+	{
+		if (ptr->info == el)//ovde greska
+			brojac++;
+		ptr = ptr->next;
+	}
+	if (brojac > 2)
+		throw new exception("Element u listi se pojavljuje vise od 2 puta!");
+	else
+		return brojac;
+}
+LList* LList::SplitOrMove()//fali brisanje iz stare liste
+{
+	LListNode* tmp = head;
+	LList* newList = new LList();
+	LListNode* ptrDuplikat;
+	LListNode* prev=nullptr;
+	LListNode* pom;
+	
+	while (tmp != nullptr)
+	{
+		int brPonEl = Duplikat(tmp->info);//broj ponavaljanja elemenata, da li ima duplikata ili su jedinstveni elementi
+		if ( brPonEl== 1)//jedinstveni elementi
+		{
+			newList->addToHead(tmp->info);
+			if (prev == nullptr)//ako je prvi element liste jedinstven
+			{
+				pom = tmp;
+				delete pom;
+				pom = nullptr;
+				head = tmp->next;
+				tmp = tmp->next;
+			}
+			else
+			{
+				prev->next = tmp->next;
+				pom = tmp;
+				tmp = tmp->next;
+				delete pom;
+				pom = nullptr;
+				
+			}
+				prev = prev->next;
+		}
+		else
+		{
+			prev = head;
+			ptrDuplikat = tmp->next;//trik da krene od narednog elementa kako bi nasao pointer za duplikat
+			while (ptrDuplikat != nullptr && ptrDuplikat->info != tmp->info)
+			{
+				ptrDuplikat = ptrDuplikat->next;
+			}
+			if(ptrDuplikat!=nullptr)
+				newList->addToHead(ptrDuplikat->info);
+
+			prev->next = tmp->next;//
+			pom = tmp;
+			tmp = tmp->next;
+			delete pom;
+			pom = nullptr;
+			//delete ptrDuplikat;
+		}
+
+		/*if (prev == nullptr)
+			prev = head;
+		else
+			prev = prev->next;*/
+		tmp = tmp->next;
+		
+	}
+	return newList;
+}
