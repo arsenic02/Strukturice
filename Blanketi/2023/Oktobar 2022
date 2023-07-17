@@ -1,0 +1,33 @@
+//1.
+int LList::MoveHigher(int value)
+{
+	LListNode* ptr = head;
+	LListNode* prev = nullptr; // Pokazivač na prethodni čvor
+
+	while (ptr != nullptr)
+	{
+		if (ptr->info > value)
+		{
+			if (prev != nullptr)
+			{
+				prev->next = ptr->next; // Preskačemo trenutni čvor
+				ptr->next = head; // Trenutni čvor postaje nova glava
+				head = ptr;
+				ptr = prev->next; // Pomak na sljedeći čvor
+			}
+			else
+			{
+				// Ako je trenutni čvor glava liste
+				head = ptr;
+				ptr = ptr->next;
+			}
+		}
+		else
+		{
+			prev = ptr; // Ažuriramo prethodni čvor
+			ptr = ptr->next; // Pomak na sljedeći čvor
+		}
+	}
+
+	return value;
+}
