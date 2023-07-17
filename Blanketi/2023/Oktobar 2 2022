@@ -1,4 +1,4 @@
-//1. zadatak
+//1. zadatak samo ova metoda radi
 void LList::MoveMinToHead(LListNode** start)
 {
 	LListNode* ptr1=head;
@@ -30,4 +30,51 @@ void LList::MoveMinToHead(LListNode** start)
 	head = min;//min je sada na pocetku liste
 	prevMin->next = pSaveHead;//stari  head se zamenjuje sa min
 	pSaveHead->next = pSaveMin;//stari  head se lancava sa sledecim cvorovima
+}
+///////////////////////////////////////////////////////////////
+//NE RADI ZAJEDNO OBE METODE
+void LList::MoveMinToHead(LListNode* ptr1)//kao start
+{
+	LListNode* start = ptr1;
+	//LListNode* ptr1;//=head;//inicijalizovan je u metoi sort
+	LListNode* ptr2 = ptr1->next;
+	LListNode* min = ptr1;
+	LListNode* pom;
+	LListNode* pSaveHead=start;//cuva head prilikom prelancavanja
+	LListNode* pSaveMin;
+	LListNode* prevMin=start;
+	while (ptr1->next != nullptr && ptr2 != nullptr)
+	{
+		if ((ptr1->info) < (ptr2->info))
+			min = ptr1;
+		else
+			min = ptr2;
+
+		if (min != start)//ako je min prvi cvor nema prelancavanja
+		{
+			while (prevMin->next != min)
+			{
+				prevMin = prevMin->next;
+			}
+		}
+		ptr1 = ptr1->next;
+		ptr2 = ptr2->next;
+	}
+	pSaveMin = min->next;
+	min->next = start->next;//prelancava se tako da min pokazuje na 2. cvor  u listi
+	start = min;//min je sada na pocetku liste
+	prevMin->next = pSaveHead;//stari head se zamenjuje sa min
+	pSaveHead->next = pSaveMin;//stari head se lancava sa sledecim cvorovima
+
+	//ptr1 = start;//ptr1 postaje start jer je bilo prelancavanja kako bi sledecim pozivima
+	//metode SortList() bilo omoguceno normalno izvrsenje
+}
+void LList::SortList()
+{
+	LListNode* ptr=head;
+	while (ptr != nullptr)
+	{
+		MoveMinToHead(ptr);
+		ptr = ptr->next;
+	}//problem posto su 5 i 1 zamenili mesta a 5 je bio pretposlednji element i onda se samo 2 puta pozove MinToHead
 }
