@@ -1,0 +1,52 @@
+/*
+Zadatak 1:
+Napisati metodu Node* findMaximal() članicu klase neuređenog binarnog stabla koja određuje čvor stabla za koji važi da je razlika zbira
+vrednosti njegovog levog podstabla i zbira vrednosti njegovog desnog podstabla maksimalna. Pri implementaciji je dozvoljeno koristiti pomoćne
+funkcije, ali ne dodatne atribute u čvoru grafa, niti dodatne pomoćne strukture podataka (npr. niz, lista, ...). Voditi računa o efikasnosti rešenja.
+*/
+Node* findMaximal()
+{
+	int max;
+	return findMax(root,&max);
+}
+
+int sum(Node* p)
+{
+	if(p==nullptr)
+		return 0;
+	return p->key+sum(p->left)+sum(p->right);
+}
+Node* findMax(Node* root,int* max)
+{
+	if(p==nullptr)
+		return nullptr;
+	if(p->left==nullptr && p->right==nullptr)
+	{
+		*max=0;
+		return p;
+	}
+	int maxL,maxR,maxM;
+	Node *l,*r,*m;
+	l=findMax(p->left,&maxL);
+	r=findMax(p->right,&maxR);
+	if(maxL>maxR)
+	{
+		m=l;
+		maxM=maxL;
+	}
+	else
+	{
+		m=r;
+		maxM=maxR;
+	}
+	int dif=abs(sum(p->left)-sum(p->right));
+	if(dif>maxM)
+	{
+		*max=m;
+		return p;
+	}
+	else{
+		*max=maxM;
+		return m;
+	}
+}
