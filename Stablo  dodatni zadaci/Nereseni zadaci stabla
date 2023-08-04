@@ -1,0 +1,9 @@
+/*
+Binarna stabla 1
+• Zadato je dinamički implementirano uređeno binarno stablo. Napisati funkciju int CountGreater (int value) koja određuje broj 
+čvorova čija vrednost je veća od zadate value. Voditi računa o efikasnosti implementacije.
+
+• Napisati funkciju int getDeepest(BSTNode* node,BSTNode** deepest), koja određuje i vraća dubinu najdubljeg lista (povratna vrednost
+funkcije), kao i pokazivač na odgovarajući list(deepest).
+*/
+nase-o/la si :)
