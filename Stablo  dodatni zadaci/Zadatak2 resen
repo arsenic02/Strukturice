@@ -1,0 +1,38 @@
+/*Zadatak 2:
+Napisati funkciju void Update(int val, int add), koja ažurira čvor u
+MinHeap‐u sa vrednošću val, dodavanjem vrednosti add. Vrednost val
+može biti i pozitivna i negativna. Nakon promene vrednosti heap mora da
+zadrži svoju strukturu.*/
+void Update(int val, int add)
+{
+	for(int i = 1; i <= no; i++)//no numberOfElements
+	{
+		if(heap[i] == val)
+		{
+			int cur = heap[i] + add;
+			if(add < 0)
+			{
+				int ind = i, par = i/2;//parent
+				while(par > 0 && heap[par] > cur)//ako je parent veci od cur heap se azurira sve do root-a
+				{
+					heap[ind] = heap[par];
+					ind = par;
+					par = par/2;
+				}
+			}
+			else
+			{//add>=0
+				int ind = i, child = i*2;//indeks levog deteta
+				while(child <= no)
+				{
+					if (child+1 <= no && heap[child+1] < heap[child])//provera da li postoji desno dete i da li je desno dete manje od levog
+						child += 1;
+					if (cur <= heap[child]) break;
+						heap[ind] = heap[child];
+						ind = child;
+				}
+			}
+			heap[ind] = cur;
+		}
+	}
+}
