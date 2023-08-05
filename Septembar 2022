@@ -1,0 +1,14 @@
+//3. RADI
+int BSTreeInt::countNodesInRange(BSTNodeInt* root, int min, int max)
+{
+	int count = 0;
+	if (root == nullptr)
+		return 0;
+	if (root->key >= min && root->key <= max)
+		count += 1 + countNodesInRange(root->left, min, max) + countNodesInRange(root->right, min, max);//+1 se povecava zbog opsega min,max
+	else if (root->key < min)//svi čvorovi sa manjim vrednostima od min mogu biti samo u desnom podstablu 
+		count += countNodesInRange(root->right, min, max);
+	else if (root->key > max)//svi čvorovi sa većim vrednostima od max mogu biti samo u levom podstablu
+		count += countNodesInRange(root->left, min, max);
+	return count;
+}
