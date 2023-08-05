@@ -1,0 +1,31 @@
+//3. 
+BSTNodeInt* BSTreeInt::getNNode()//okt2 2021
+{
+	return getNNode(root);
+}
+BSTNodeInt* BSTreeInt::getNNode(BSTNodeInt* root)
+{
+	if (root != nullptr)
+	{
+		int counterLeft = obilaziCvorove(root->left, 0);
+		int counterRight = obilaziCvorove(root->right, 0);
+		if (counterRight == counterLeft + 2)
+			return root;
+		//getNNode(root->left);//ja sam ovako ali ne radi  dobro
+		//getNNode(root->right); --||--
+		BSTNodeInt* leftResult = getNNode(root->left);//16- 20 linija AI uradila nisam siguran
+		if (leftResult != nullptr)
+			return leftResult;
+		return getNNode(root->right);
+	}
+	return nullptr;
+}
+int BSTreeInt::obilaziCvorove(BSTNodeInt* ptr,int* counter)
+{
+	int countL, countR;
+	if (ptr == nullptr)
+		return 0;
+	countL=obilaziCvorove(ptr->left,counter);
+	countR=obilaziCvorove(ptr->right,counter);
+	return 1+countL+countR;
+}
