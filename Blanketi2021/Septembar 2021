@@ -1,0 +1,20 @@
+/*3.Napisati fju int countSingleLeavesNodes koja u dinamicki implementiranom uredjenom binarnom stablu, broji koliko
+ima cvorova koji imaju samo jedan list kao potomak*/ RADI
+int BSTreeInt::countSingleLeavesNodes(BSTNodeInt* root)
+{
+	if (root == nullptr)
+		return 0;
+	else if (Leaf(root->left) && !Leaf(root->right))
+		return 1 + countSingleLeavesNodes(root->left);
+	else if (!Leaf(root->left) && Leaf(root->right))
+		return 1 + countSingleLeavesNodes(root->right);
+	return countSingleLeavesNodes(root->left) + countSingleLeavesNodes(root->right);
+}
+bool BSTreeInt::Leaf(BSTNodeInt* ptr)
+{
+	if (ptr != nullptr && ptr->left == nullptr && ptr->right == nullptr)
+	{
+		return true;
+	}
+	return false;
+}
