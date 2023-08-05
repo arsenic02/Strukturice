@@ -34,3 +34,29 @@ void LList::SortList()//nesto nece
 		LList::printAll();
 	}
 }
+//3. ne radi bas treba da se resi da se ptr "inkrementira"
+BSTNodeInt* BSTreeInt::findSibling(BSTNodeInt* p)
+{
+	BSTNodeInt* ptr = root;
+	BSTNodeInt* ptrDeq;//ptr u koji se smesta ptr iz reda
+	QueueAsArrayBSTNodeInt queue(numOfElements);
+	int pFlag = 0;//govori dali je nadjen p pointer
+	for (int n = 1; n <= numOfElements; n *= 2)//osobina stabla da svaki sledeci nivo ima 2 puta vise cvorova
+	{
+		for (int i = 1; i < n; i++)//smestanje u red svakog cvora po nivou
+		{
+			if (ptr == p) {
+				pFlag++;
+			}
+			queue.enqueue(ptr);
+			
+			if (pFlag > 0 && !queue.isEmpty() && p!=ptr)
+			{
+				ptrDeq = queue.dequeue();//mozda i da se isprazni red
+				return ptrDeq;
+			}
+			queue.dequeue();
+		}
+	}
+	return nullptr;
+}
