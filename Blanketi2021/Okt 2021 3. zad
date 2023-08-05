@@ -1,1 +1,37 @@
 //3. zad nije dobar Luleks kod po gptu
+int countSpecificNodes() {//okt 2021 moj nacin
+		return countSpecificNodes(root);
+	}
+	int countSpecificNodes(BSTNodeInt* root) {
+		int counter = 0;
+		if (root == 0)
+			return 0;
+		int countLeft = obidjiStablo(root->left,&counter);
+		int countRight = obidjiStablo(root->right,&counter);
+		int count = 0;
+		if (countRight > countLeft)
+			count += 1;
+		return count + countSpecificNodes(root->left)
+			+ countSpecificNodes(root->right);
+	}
+	int obidjiStablo(BSTNodeInt* ptr, int* counter)
+	{
+		if (ptr != nullptr)
+		{
+			if (isLeaf(ptr)>0)
+			{
+				(*counter)++;
+			}
+
+			 obidjiStablo(ptr->left,counter);// ai kaze bez return
+			 obidjiStablo(ptr->right,counter);//ai kaze bez return
+		}
+		//else
+			return *counter;
+	}
+	bool isLeaf(BSTNodeInt* ptr)
+	{
+		if (ptr->left == nullptr && ptr->right == nullptr)
+			return 1;
+		return 0;
+	}
