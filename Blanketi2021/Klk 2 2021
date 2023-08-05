@@ -1,0 +1,26 @@
+//3. zadatak moj naci radi
+int deleteALlLeftLeafs(BSTNodeInt* root);//kol2 2021
+	int obilazakStabla(BSTNodeInt* root,int *delNodes);
+
+int BSTreeInt::deleteALlLeftLeafs(BSTNodeInt* root)
+{
+	int deletedNodes = 0;
+	return obilazakStabla(root,&deletedNodes);
+}
+int BSTreeInt::obilazakStabla(BSTNodeInt* ptr,int *deletedNodes)
+{
+	//morace u prvoj fji da se deklarise
+	if (ptr!= nullptr)//(ptr->left != nullptr || ptr->right!=nullptr)
+	{
+		if (ptr->left != nullptr && ptr->left->left == nullptr && ptr->left->right==nullptr)//uslov za levi list 
+		{
+			delete ptr->left; 
+			ptr->left = nullptr;
+			(*deletedNodes)++;
+		}
+		obilazakStabla(ptr->left,deletedNodes);
+		obilazakStabla(ptr->right, deletedNodes);
+	}
+	return *deletedNodes;
+}
+
