@@ -1,0 +1,39 @@
+//3.
+//main.cpp
+int maxDiff = INT_MIN;
+cout << stablo->VratiCvorSaMaxRazlikom(stablo->root, &maxDiff);
+//BSTreeInt.cpp
+BSTNodeInt* BSTreeInt::VratiCvorSaMaxRazlikom(BSTNodeInt* root,int* max)
+{
+	if (root == nullptr)
+		return nullptr;
+	int sumaParnih = 0, sumaNeparnih = 0;// , currMax = 0;
+	//nt currMax= nullptr;
+	sumaParnihINeparnih(root, &sumaParnih, &sumaNeparnih);
+	int currMax = abs(sumaParnih - sumaNeparnih);
+	if (currMax > *max)
+	{
+		*max = currMax;
+		return root;
+	}
+	BSTNodeInt* leftMaxNode = VratiCvorSaMaxRazlikom(root->left,max);
+	BSTNodeInt* rightMaxNode = VratiCvorSaMaxRazlikom(root->right,max);
+	if (*max == currMax) {
+		if (leftMaxNode != nullptr) return leftMaxNode;
+		if (rightMaxNode != nullptr) return rightMaxNode;
+	}
+
+	return root;
+}
+
+void BSTreeInt::sumaParnihINeparnih(BSTNodeInt* root,int* sumaParnih, int* sumaNeparnih)
+{//void sam napravio posto se kroz pointere prenose sume parnih i  neparnih
+	if (root == nullptr)
+		return;
+	if (root->key % 2 == 0)
+		(*sumaParnih) += root->key;
+	else
+		(*sumaNeparnih) += root->key;
+	sumaParnihINeparnih(root->left,sumaParnih,sumaNeparnih);
+	sumaParnihINeparnih(root->right, sumaParnih, sumaNeparnih);
+}
