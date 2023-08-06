@@ -1,0 +1,18 @@
+//3. 
+int BSTreeInt::countSL(BSTNodeInt* root)
+{
+	if(root == nullptr)
+		countKeys(root);
+	int countLeft = countKeys(root->left);
+	int countRight = countKeys(root->right);
+	int count = 0;
+	if (countLeft > countRight)
+		count++;
+	return count + countSL(root->left) + countSL(root->right);
+}
+int BSTreeInt::countKeys(BSTNodeInt* root)
+{
+	if (root == 0)
+		return 0;
+	return root->key + countKeys(root->left) + countKeys(root->right);
+}
