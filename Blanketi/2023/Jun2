@@ -34,3 +34,35 @@ napravi metodu koaj u jednostrukkoj lancanoj listi pronalazi prvo pojavljivanje 
 zavrsava se cvorom end i premesta je na pocetak liste, nije dozvoljeno koristiti podrazumevane metode implementacije liste.
 Vodi racuna o efikasnosti
 */
+
+//3. trebalo bi da je dobar kod ali nzm zasto zeza kod runovanja
+int BSTreeInt::countSmaller(int d) {
+	int counter = 0;
+	return countSmaller(d, root, counter);
+}
+
+int countSmaller(int d, BSTNodeInt* root, int& counter) {
+	if (root == nullptr)
+		return 0;
+
+	int n = root->key;
+	if (n - d < n) {
+		// Provera da li postoji bar jedan cvor "np" u podstablu trenutnog cvora koji zadovoljava uslov
+		if (checkNodeInSubtree(root, n - d, n)) {
+			counter++;
+		}
+	}
+
+	return countSmaller(d, root->left, counter) + countSmaller(d, root->right, counter);
+}
+
+bool BSTreeInt:: checkNodeInSubtree(BSTNodeInt* root, int low, int high) {
+	if (root == nullptr)
+		return false;
+
+	int n = root->key;
+	if (low < n && n < high)
+		return true;
+
+	return checkNodeInSubtree(root->left, low, high) || checkNodeInSubtree(root->right, low, high);
+}
