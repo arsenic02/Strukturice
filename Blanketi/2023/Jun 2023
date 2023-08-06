@@ -1,0 +1,35 @@
+//3. AI, imam i svoje slicno ali ne radi najbolje
+BSTNodeInt* BSTreeInt::maxHeightDiff()
+{
+    int maxDiff = 0;
+    return maxHeightDiff(root, &maxDiff);
+}
+
+BSTNodeInt* BSTreeInt::maxHeightDiff(BSTNodeInt* root, int* max)
+{
+    if (root == nullptr)
+        return nullptr;
+
+    int heightLeft = Height(root->left);
+    int heightRight = Height(root->right);
+    int currentDiff = abs(heightLeft - heightRight);
+
+    if (currentDiff > *max)
+    {
+        *max = currentDiff;
+        return root;
+    }
+
+    BSTNodeInt* leftMax = maxHeightDiff(root->left, max);
+    BSTNodeInt* rightMax = maxHeightDiff(root->right, max);
+
+    return (*max > currentDiff) ? ((leftMax != nullptr) ? leftMax : rightMax) : root;
+}
+
+int BSTreeInt::Height(BSTNodeInt* root)
+{
+    if (root == nullptr)
+        return 0;
+
+    return 1 + max(Height(root->left), Height(root->right));
+}
