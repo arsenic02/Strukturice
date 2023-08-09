@@ -1,0 +1,48 @@
+//4. Luleks ima sitne greske, ovo je moj ispravljen kod
+void GraphAsListsInt:: countIns()// dec 2021 Brojanje ulaznih grana
+{
+	LinkedNodeInt* temp = start;
+	while (temp != 0)//setStatusForAllNodes(1)
+	{
+		temp->status = 1;
+		temp = temp->next;
+	}
+	temp = start;
+	while (temp != nullptr)
+	{
+		LinkedEdgeInt* edge = temp->adj;
+		while (edge != nullptr)
+		{
+			edge->dest->distance++;// Povecanje broja ulaznih grana za odredisni cvor
+			edge = edge->link;
+		}
+		temp = temp->next;
+	}
+}
+void GraphAsListsInt::obidjiSveMoguce(int start)
+{
+	countIns();
+	LinkedNodeInt* temp = this->start;
+	while (temp != nullptr && temp->node != start)
+		temp = temp->next;
+	if (temp == 0)
+		return;
+	StackAsArrayLinkedNodeInt stek(nodeNum);
+	stek.push(temp);
+	temp->status = 2;
+	while (!stek.isEmpty())
+	{
+		//temp = stek.getTop();
+		temp = stek.pop();
+		temp->status = 3;
+		temp->visit();
+		LinkedEdgeInt* edge = temp->adj;
+		while (edge != nullptr)
+		{
+			edge->dest->distance--;// Smanjenje broja ulaznih grana za odredisni cvor
+			if (edge->dest->distance == 0 && edge->dest->status == 1)// Ako su ulazne grane nule i cvor nije posecen
+				stek.push(edge->dest);// Stavljanje odredisnog cvora na stek
+			edge = edge->link;
+		}
+	}
+}
