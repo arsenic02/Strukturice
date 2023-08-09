@@ -16,7 +16,7 @@ int BSTreeInt::countKeys(BSTNodeInt* root)
 		return 0;
 	return root->key + countKeys(root->left) + countKeys(root->right);
 }
-//4. prijavljuje greske nzm zasto
+//4. 
 void breadthVariant(LinkedNodeInt* node1, int maxH) {
     LinkedNodeInt* temp = start;//zasto  ovde greska
     while (temp != 0) {
