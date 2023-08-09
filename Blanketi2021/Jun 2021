@@ -16,3 +16,73 @@ int BSTreeInt::countKeys(BSTNodeInt* root)
 		return 0;
 	return root->key + countKeys(root->left) + countKeys(root->right);
 }
+//4. prijavljuje greske nzm zasto
+void breadthVariant(LinkedNodeInt* node1, int maxH) {
+    LinkedNodeInt* temp = start;//zasto  ovde greska
+    while (temp != 0) {
+        temp->status = 1;
+        temp->prev = 0;   // Postavi prethodnika čvora na nulu (0)
+        temp = temp->next;
+    }
+    temp = node1; // Postavi temp na početni čvor
+    QueueAsArrayLinkedNodeInt qju (nodeNum);//zasto ovde greska
+    qju.enqueue(temp);
+    temp->status = 2;
+    while (!qju.isEmpty()) {
+        // Uzmi čvor sa početka reda
+        temp = qju.dequeue();
+        temp->status = 3;
+        LinkedEdgeInt* edge = temp->adj; // Pokazivač na prvu granu koja izlazi iz čvora
+        while (edge != 0) {
+            if (edge->dest->status == 1 and edge->weight < maxH) { // Ako je čvor neposećen i težina grane je manja od maxH
+                qju.enqueue(edge->dest); // Dodaj odredišni čvor u red za dalje istraživanje
+                edge->dest->status = 2;
+                edge->dest->prev = temp; // Postavi prethodnika odredišnog čvora na trenutni čvor
+            }
+            edge = edge->link;
+        }
+    }
+}
+
+// Funkcija za pronalaženje najboljeg puta između tri čvora u grafu
+LinkedNodeInt* boljiPut(LinkedNodeInt* nodeA, LinkedNodeInt* nodeB, LinkedNodeInt* nodeC, int maxH, int* brPresedanja) {
+    breadthVariant(nodeA, maxH); // Primeni pretragu u širinu sa početnim čvorom nodeA
+    int presedanjaB = 0, presedanjaC = 0; // Brojači za presedanja do čvorova nodeB i nodeC
+    bool existsPathToB = false, existsPathToC = false; // Da li postoji put do čvorova nodeB i nodeC
+    LinkedNodeInt* temp = nodeB; // Postavi temp na nodeB
+    while (temp != 0 and temp != nodeA) { // Računaj presedanja do nodeB
+        presedanjaB += 1;
+        temp = temp->prev;
+    }
+    if (temp == nodeA)
+        existsPathToB = true; // Ako je temp stigao do nodeA, postoji put do nodeB
+    temp = nodeC; // Postavi temp na nodeC
+    while (temp != 0 and temp != nodeA) { // Računaj presedanja do nodeC
+        presedanjaC += 1;
+        temp = temp->prev;
+    }
+    if (temp == nodeA)
+        existsPathToC = true; // Ako je temp stigao do nodeA, postoji put do nodeC
+    if (existsPathToB and existsPathToC) { // Ako postoje putevi do oba nodeB i nodeC
+        if (presedanjaB < presedanjaC) { // Izaberi put sa manje presedanja
+            *brPresedanja = presedanjaB;
+            return nodeB;
+        }
+        else {
+            *brPresedanja = presedanjaC;
+            return nodeC;
+        }
+    }
+    else if (existsPathToB) { // Ako postoji put do nodeB
+        *brPresedanja = presedanjaB;
+        return nodeB;
+    }
+    else if (existsPathToC) { // Ako postoji put do nodeC
+        *brPresedanja = presedanjaC;
+        return nodeC;
+    }
+    else { // Ako ne postoji put do nodeB ni nodeC
+        *brPresedanja = -1; // Postavi broj presedanja na -1
+        return nodeA; // Vrati nodeA
+    }
+}
