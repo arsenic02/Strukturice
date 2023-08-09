@@ -31,3 +31,41 @@ void LList::GroupElements()
 			ptr2 = ptr1->next;
 	}
 }
+//4.
+int GraphAsListsInt::getMaxConnectionsDisjointSubgraph()
+{
+	LinkedNodeInt* temp = start;
+	setStatusForAllNodes(1);
+	LinkedNodeInt* nextNode = temp;
+	int maxCount = 0, curCount;
+	QueueAsArrayLinkedNodeInt qju(nodeNum);
+	while (temp != 0)
+	{
+		qju.enqueue(temp);
+		temp->status = 1;
+		curCount = 0; // Resetovanje brojaca trenutnog broja potega
+		while (!qju.isEmpty())
+		{
+			temp = qju.dequeue();
+			temp->status = 2;
+			LinkedEdgeInt* edge = temp->adj;
+			while (edge != nullptr)
+			{
+				if (edge->dest->status == 0)
+				{
+					qju.enqueue(edge->dest);
+					edge->dest->status = 1;
+				}
+				if (edge->dest->status != 2)//kad je status=2, cvor je vec obradjen, da sse spreci dupliranje
+					curCount++;
+				edge = edge->link;
+			}
+		}
+		if (curCount > maxCount)
+			maxCount = curCount;
+		while (nextNode != 0 && nextNode->status != 0)
+			nextNode = nextNode->next;
+		temp = nextNode;
+	}
+	return maxCount;
+}
