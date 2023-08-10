@@ -1,0 +1,80 @@
+long GraphAsListsInt::shortestPathDijkstra(int a, int typeImplementation)
+{
+    long retVal = 0;
+    LinkedNodeInt* ptr = start;
+    while (ptr != nullptr)
+    {
+        ptr->status = 1; 
+        ptr->prev = nullptr; 
+        ptr->distance = numeric_limits<double>::max(); // Postavljanje udaljenosti čvora na beskonačno.
+        ptr = ptr->next; 
+    }
+    
+    ptr = findNode(a); // Pronalaženje čvora 'ptr' sa ključem 'a'.
+    if (ptr == nullptr)
+        return 0; 
+    PriorityQueue* priorityQueue = nullptr;
+    
+    if (typeImplementation == 1)
+        priorityQueue = new PriorityQueueAsArray(nodeNum); 
+    else if (typeImplementation == 2)
+        priorityQueue = new PriorityQueueAsMinHeap(nodeNum); 
+    
+    ptr->distance = 0; // Postavljanje udaljenosti početnog čvora na 0.
+    priorityQueue->insert(ptr);
+    ptr->status = 2; 
+    while (!priorityQueue->isEmpty())
+    {
+        ptr = priorityQueue->removeFirst(); // Uklanjanje čvora sa najmanjom udaljenošću iz prioritetnog reda.
+        ptr->status = 3; 
+        retVal++; 
+    }
+    
+    Edge* pot = ptr->adj; 
+    while (pot != nullptr)
+    {
+        if (pot->dest->status == 1)//ako je status=1, pronasli smo skraceni put
+        {
+            pot->dest->distance = ptr->distance + pot->weight; // Ažuriranje udaljenosti čvora 'dest'.
+            pot->dest->status = 2; 
+            pot->dest->prev = ptr; 
+            priorityQueue->insert(pot->dest); // Ubacivanje čvora 'dest' u prioritetni red.
+        }
+        else if (pot->dest->status == 2)
+			/*
+			Ako je destinacija već u redu za posetu (status 2), proveravamo da li se preko trenutnog čvora 'ptr' može stići do destinacije
+			kraće nego preko dosadašnjeg puta. Ako je to slučaj, ažuriramo udaljenost i prioritet čvora u prioritetnom redu.
+			*/
+            if (pot->dest->distance > ptr->distance + pot->weight)//da li je nova udaljenost preko trenutnog čvora kraća od prethodno zabeležene udaljenosti do dest
+            {
+                double newDistance = ptr->distance + pot->weight; // Računanje nove udaljenosti.
+                pot->dest->prev = ptr; // Ažuriranje prethodnika čvora 'dest'.
+                priorityQueue->update(pot->dest, newDistance); // Ažuriranje udaljenosti čvora 'dest' u prioritetnom redu i prioriteta
+                pot->dest->distance = newDistance; // Ažuriranje udaljenosti čvora 'dest'.
+            }
+        pot = pot->link; 
+    }
+    
+    return retVal; 
+}
+/*
+Ova metoda primenjuje Dijkstrin algoritam za pronalaženje najkraćeg puta od čvora sa ključem 'a' do svih ostalih čvorova u grafu. Dakle, ona kreće od početnog čvora 'a' i postepeno širi svoju pretragu kroz graf kako bi pronašla najkraće puteve do svih ostalih čvorova.
+
+Evo kako algoritam funkcioniše korak po korak:
+
+Prvo se prolazi kroz sve čvorove u grafu i postavljaju se njihovi statusi na 1 (neposećen), prethodnici na nullptr i udaljenosti na beskonačno.
+
+Pronalazi se čvor sa ključem 'a' i postavlja njegova udaljenost na 0, a zatim se ubacuje u prioritetni red.
+
+Algoritam počinje obradu čvorova iz prioritetnog reda. Za svaki čvor koji se izbacuje iz prioritetnog reda:
+
+Postavlja se status čvora na 3 (posećen).
+Brojač retVal se povećava kako bi se pratio broj posećenih čvorova.
+Za svaku granu čvora koji je upravo obradjen:
+
+Ako je destinacija grane neposećena (status 1), ažurira se udaljenost i dodaje se u prioritetni red.
+Ako je destinacija grane već u redu za posetu (status 2) i ako se putem preko trenutnog čvora može stići do destinacije kraće od trenutnog puta, ažurira se udaljenost i prioritet čvora u prioritetnom redu.
+Na kraju, metoda će vratiti broj posećenih čvorova, što može biti korisno u analizi ili optimizaciji algoritma.
+
+metoda se kreće od čvora 'a' i traži najkraće puteve do svih ostalih čvorova u grafu.
+*/
