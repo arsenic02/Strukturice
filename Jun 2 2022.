@@ -42,3 +42,66 @@ int brojCvorova(BSTNode* root, int keyMin, double valueMin, bool ancestorExists)
 		count += brojCvorova(root->left, keyMin, valueMin, false) + brojCvorova(root->right, keyMin, valueMin, false);
 	return count;
 }
+//4.
+void GraphAsListsInt::bfs(LinkedNodeInt* node)
+{
+	LinkedNodeInt* temp = node;
+	QueueAsArrayLinkedNodeInt qju(nodeNum);
+	qju.enqueue(temp);
+	temp->status = 2;
+
+
+	while (!qju.isEmpty()) 
+	{
+		temp=qju.dequeue();
+		temp->status = 3;
+		LinkedEdgeInt* edge = temp->adj;
+		while (edge != 0) {
+
+			if (edge->dest->status == 1) {
+				qju.enqueue(edge->dest);
+				edge->dest->status = 2;
+				edge->dest->prev = temp;//dodato  ovo u odnosu na standardnu bfs
+			}
+			edge = edge->link;
+		}
+	}
+}
+int GraphAsListsInt::BridgeCount(int a, int b)
+{
+	LinkedNodeInt* temp = start;
+	LinkedNodeInt* A = 0, * B = 0;
+
+	//A = findNode(a); ne radi lepo sa ovim
+	//B = findNode(b); ne radi lepo sa ovim
+	while (temp != 0) {
+		temp->status = 1;  // Postavljamo status čvora na 1 (označava da nije posećen).
+		temp->prev = 0;
+
+		if (temp->node == a)
+			A = temp;
+
+		if (temp->node == b)
+			B = temp;
+
+		temp = temp->next;  // Pomeramo se na sledeći čvor.
+	}
+
+	// Ako nismo pronašli oba čvora, vraćamo -1.
+	if (A == 0 or B == 0)
+		return -1;
+
+	bfs(A);
+	int count = 0;
+	temp = B;
+
+	// Računamo broj mostova tako što pratimo prethodne čvorove unazad od čvora 'B' do čvora 'A'.
+	while (temp != 0 and temp != A) {
+		count += 1;         // Povećavamo brojač.
+		temp = temp->prev;  // Prelazimo na prethodni čvor.
+	}
+
+	// Ako smo stigli do čvora 'A', vraćamo broj mostova, inače vraćamo -1.
+	return (temp == A) ? count : -1;
+}
+////////////////////Ako je tezinski graf dijkstra
