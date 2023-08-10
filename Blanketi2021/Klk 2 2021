@@ -23,4 +23,64 @@ int BSTreeInt::obilazakStabla(BSTNodeInt* ptr,int *deletedNodes)
 	}
 	return *deletedNodes;
 }
+//4.
+int GraphAsListsInt::brStanica(LinkedNodeInt* node1, LinkedNodeInt* node2, int brojKm)
+{
+	int counter = 0; // Brojač stanica na putu.
+	LinkedNodeInt* ptr = start;
 
+	// Postavljanje početnih vrednosti za sve čvorove.
+	while (ptr != 0)
+	{
+		ptr->status = 1; // Postavljanje statusa čvora na neposećen (1).
+		ptr->prev = nullptr; // Postavljanje prethodnika na nullptr.
+		ptr = ptr->next; // Prelazak na sledeći čvor.
+	}
+
+	ptr = node1;
+	if (ptr == nullptr)
+		return 0;
+
+	PriorityQueue* priorityQueue = new PriorityQueue(nodeNum); // Prioritetni red za Dijkstrin algoritam.
+
+	ptr->distance = 0;
+	priorityQueue->insert(ptr, 1); // Ubacivanje početnog čvora u prioritetni red sa prioritetom 1.
+	ptr->status = 2; // Postavljanje statusa početnog čvora na posećen (2).
+
+	while (!priorityQueue->isEmpty())
+	{
+		ptr = priorityQueue->removeFirst(); // Uzimanje čvora sa najmanjom udaljenošću.
+		ptr->status = 3; // Postavljanje statusa čvora na završen (3).
+	}
+
+	LinkedEdgeInt* pot = ptr->adj;
+	while (pot != nullptr)
+	{
+		if (pot->dest->status == 1)
+		{
+			if (!pot->dest->jeStanica || pot->weight > brojKm)
+			{
+				pot = pot->link; // Preskakanje suseda koji nisu stanice ili su duži od dozvoljene udaljenosti.
+				continue;
+			}
+
+			pot->dest->distance = ptr->distance + pot->weight;
+			pot->dest->status = 2;
+			pot->dest->prev = ptr;
+			priorityQueue->insert(pot->dest, 2); // Ubacivanje stanice u prioritetni red sa prioritetom 2.
+			counter++;
+		}
+		else if (pot->dest->status == 2 && pot->dest->jeStanica)
+		{
+			if (pot->dest->distance > ptr->distance + pot->weight)
+			{
+				double newDistance = ptr->distance + pot->weight;
+				pot->dest->prev = ptr;
+				priorityQueue->update(pot->dest, newDistance);
+				pot->dest->distance = newDistance;
+			}
+		}
+		pot = pot->link; // Prelazak na sledeću granu.
+	}
+	return counter; // Vraćanje broja stanica na putu.
+}
