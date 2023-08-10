@@ -1,0 +1,92 @@
+//PriorityQueue.h
+#pragma once
+#include "LinkedEdgeInt.h"
+#include "LinkedNodeInt.h"
+#define INT_MAX 9999999999
+class PriorityQueue
+{
+private:
+    static const int MAX_SIZE = 1000;
+    LinkedNodeInt* heap[MAX_SIZE];
+    int priorities[MAX_SIZE];
+    int size;
+
+    void heapifyUp(int index);
+
+    void heapifyDown(int index);
+
+    void swap(int i, int j);
+
+public:
+    PriorityQueue() : size(0) {}
+    PriorityQueue(int n) { size = n; }
+    void insert(LinkedNodeInt* data, int priority);
+    bool isEmpty() const { return size == 0;}
+    LinkedNodeInt* removeFirst();
+    void update(LinkedNodeInt* data, int newPriority);
+};
+//PriorityQueue.cpp
+#include "PriorityQueue.h"
+void PriorityQueue:: heapifyUp(int index) {
+    int parent = (index - 1) / 2;
+    while (index > 0 && priorities[parent] > priorities[index]) {
+        swap(index, parent);
+        index = parent;
+        parent = (index - 1) / 2;
+    }
+}
+void PriorityQueue::heapifyDown(int index) {
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+    int smallest = index;
+
+    if (left < size && priorities[left] < priorities[index]) {
+        smallest = left;
+    }
+
+    if (right < size && priorities[right] < priorities[smallest]) {
+        smallest = right;
+    }
+
+    if (smallest != index) {
+        swap(index, smallest);
+        heapifyDown(smallest);
+    }
+}
+void PriorityQueue::swap(int i, int j) {
+    LinkedNodeInt* tempNode = heap[i];
+    int tempPriority = priorities[i];
+    heap[i] = heap[j];
+    priorities[i] = priorities[j];
+    heap[j] = tempNode;
+    priorities[j] = tempPriority;
+}
+void PriorityQueue::insert(LinkedNodeInt* data, int priority) {
+    if (size >= MAX_SIZE) {
+        return;
+    }
+    int index = size++;
+    heap[index] = data;
+    priorities[index] = priority;
+    heapifyUp(index);
+}
+LinkedNodeInt* PriorityQueue::removeFirst() {
+    if (isEmpty()) {
+        return nullptr;
+    }
+    LinkedNodeInt* data = heap[0];
+    heap[0] = heap[--size];
+    priorities[size] = INT_MAX;
+    heapifyDown(0);
+    return data;
+}
+void PriorityQueue::update(LinkedNodeInt* data, int newPriority) {
+    for (int i = 0; i < size; ++i) {
+        if (heap[i] == data) {
+            priorities[i] = newPriority;
+            heapifyUp(i);
+            heapifyDown(i);
+            break;
+        }
+    }
+}
