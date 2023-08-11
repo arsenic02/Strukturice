@@ -37,3 +37,126 @@ void BSTreeInt::sumaParnihINeparnih(BSTNodeInt* root,int* sumaParnih, int* sumaN
 	sumaParnihINeparnih(root->left,sumaParnih,sumaNeparnih);
 	sumaParnihINeparnih(root->right, sumaParnih, sumaNeparnih);
 }
+//4. ??
+int GraphAsListsInt::doesConnectedComponentExists(int k)
+{
+	// Prvo proverimo da li postoji put između svih čvorova u grafu
+	if (!hasPathBetweenAllNodes())
+		return 0;
+
+	// Iteriramo kroz sve čvorove kako bismo pronašli povezane komponente
+	for (LinkedNodeInt* startNode = start; startNode != nullptr; startNode = startNode->next)
+	{
+		if (countNodesInConnectedComponent(startNode) > k)
+		{
+			return 1; // Pronašli smo komponentu sa više od "k" čvorova
+		}
+	}
+
+	return 0; // Nismo pronašli takvu komponentu
+}
+
+int GraphAsListsInt::countNodesInConnectedComponent(LinkedNodeInt* startNode)
+{
+	setStatusForAllNodes(1); // Postavimo sve čvorove na nesetovane
+	QueueAsArrayLinkedNodeInt queue(nodeNum);
+	queue.enqueue(startNode);
+	startNode->status = 2;
+
+	int count = 0; // Brojač čvorova u komponenti
+
+	while (!queue.isEmpty())
+	{
+		LinkedNodeInt* ptr = queue.dequeue();
+		ptr->status = 3;
+		count++;
+
+		LinkedEdgeInt* pEdge = ptr->adj;
+		while (pEdge != nullptr)
+		{
+			if (pEdge->dest->status == 1)
+			{
+				pEdge->dest->status = 2;
+				queue.enqueue(pEdge->dest);
+			}
+			pEdge = pEdge->link;
+		}
+	}
+
+	return count;
+}
+
+bool GraphAsListsInt::hasPathBetweenAllNodes() const
+{
+	for (LinkedNodeInt* startNode = start; startNode != nullptr; startNode = startNode->next)
+	{
+		if (!hasPathFromNodeToAllNodes(startNode))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool GraphAsListsInt::hasPathFromNodeToAllNodes(LinkedNodeInt* startNode) const
+{
+	setStatusForAllNodes(1);
+	QueueAsArrayLinkedNodeInt queue(nodeNum);
+	queue.enqueue(startNode);
+	startNode->status = 2;
+
+	while (!queue.isEmpty())
+	{
+		LinkedNodeInt* ptr = queue.dequeue();
+		ptr->status = 3;
+
+		LinkedEdgeInt* pEdge = ptr->adj;
+		while (pEdge != nullptr)
+		{
+			if (pEdge->dest->status == 1)
+			{
+				pEdge->dest->status = 2;
+				queue.enqueue(pEdge->dest);
+			}
+			pEdge = pEdge->link;
+		}
+	}
+
+	// Check if all nodes were visited
+	for (LinkedNodeInt* node = start; node != nullptr; node = node->next)
+	{
+		if (node->status != 3)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+void GraphAsListsInt:: transformGraph()
+{
+	LinkedNodeInt* ptr = start;//->next;
+	//LinkedNodeInt* prev=start;
+	LinkedEdgeInt* pEdge;
+	if (ptr == nullptr)
+		return;
+	while (ptr != nullptr)// &&  prev!=nullptr)
+	{
+		pEdge = ptr->adj;
+		while (pEdge != nullptr)
+		{
+			if (!edgeExists(pEdge->dest, ptr))
+				pEdge->dest->adj = new LinkedEdgeInt(ptr, pEdge->dest->adj);
+				//prev = ptr;
+				pEdge = pEdge->link;
+		}
+		ptr = ptr->next;
+	}
+}
+bool GraphAsListsInt::edgeExists(LinkedNodeInt* a, LinkedNodeInt* b)
+{
+	LinkedEdgeInt* edge = a->adj;
+	while (edge != nullptr && edge->dest != b)
+		edge = edge->link;
+	return edge != nullptr;
+}
