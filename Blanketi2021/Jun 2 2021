@@ -1,5 +1,6 @@
 //4.
 int reachableInNHoops(GraphNode* a, int n) {
+//bolje red/stek za ovakve zadatke, dijkstra samo kad se trazi najkraci put!!!
     // Postavljanje privremenog pokazivača za prolazak kroz čvorove grafa
     GraphNode* temp = start;
 
