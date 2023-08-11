@@ -33,3 +33,102 @@ int BSTreeInt::Height(BSTNodeInt* root)
 
     return 1 + max(Height(root->left), Height(root->right));
 }
+//4. nisam siguran AI
+// Maksimalan broj čvorova
+const int MAX_V = 1000;
+
+// Klasa za predstavljanje čvora liste susedstva
+class Node {
+public:
+    int data;       // Podatak čvora (vrednost čvora)
+    Node* next;     // Pokazivač na sledeći čvor u listi
+
+    Node(int d) : data(d), next(nullptr) {}
+};
+
+// Klasa za implementaciju grafa koristeći listu susedstva
+class Graph {
+private:
+    int V;                   // Broj čvorova
+    Node* adjacencyList[MAX_V];  // Lista susedstva za svaki čvor
+    int degree[MAX_V];        // Niz za čuvanje stepena svakog čvora
+
+public:
+    // Konstruktor klase Graph
+    Graph(int vertices) : V(vertices) {
+        // Inicijalizacija liste susedstva i stepena čvorova
+        for (int i = 0; i < V; ++i) {
+            adjacencyList[i] = nullptr;
+            degree[i] = 0;
+        }
+    }
+
+    // Metoda za dodavanje grane između čvorova u listu susedstva
+    void addEdge(int u, int v) {
+        // Dodavanje čvora v u listu susedstva čvora u
+        Node* newNode = new Node(v);
+        newNode->next = adjacencyList[u];
+        adjacencyList[u] = newNode;
+
+        // Dodavanje čvora u u listu susedstva čvora v
+        newNode = new Node(u);
+        newNode->next = adjacencyList[v];
+        adjacencyList[v] = newNode;
+
+        // Ažuriranje stepena čvorova
+        degree[u]++;
+        degree[v]++;
+    }
+
+    // Metoda koja povezuje čvorove sa najmanjim i najvećim stepenom dodavanjem potega
+    void connectMaxAndMin() {
+        int minDegreeNode = -1;
+        int maxDegreeNode = -1;
+        int minDegree = V + 1;
+        int maxDegree = -1;
+
+        // Pronalaženje čvora sa najmanjim i najvećim stepenom
+        for (int i = 0; i < V; ++i) {
+            if (degree[i] < minDegree) {
+                minDegree = degree[i];
+                minDegreeNode = i;
+            }
+            if (degree[i] > maxDegree) {
+                maxDegree = degree[i];
+                maxDegreeNode = i;
+            }
+        }
+
+        // Dodavanje potega između disjunktnih podgrafova
+        Node* newNode = new Node(maxDegreeNode);
+        newNode->next = adjacencyList[minDegreeNode];
+        adjacencyList[minDegreeNode] = newNode;
+
+        newNode = new Node(minDegreeNode);
+        newNode->next = adjacencyList[maxDegreeNode];
+        adjacencyList[maxDegreeNode] = newNode;
+
+        // Ažuriranje stepena čvorova
+        degree[minDegreeNode]++;
+        degree[maxDegreeNode]++;
+    }
+};
+
+int main() {
+    // Kreiranje grafa sa 7 čvorova
+    Graph g(7);
+
+    // Dodavanje grana između čvorova
+    g.addEdge(0, 1);
+    g.addEdge(0, 2);
+    g.addEdge(1, 2);
+    g.addEdge(3, 4);
+    g.addEdge(4, 5);
+    g.addEdge(4, 6);
+
+    // Dodavanje potega između disjunktnih podgrafova sa najvećim i najmanjim brojem čvorova
+    g.connectMaxAndMin();
+
+    return 0;
+}
+
