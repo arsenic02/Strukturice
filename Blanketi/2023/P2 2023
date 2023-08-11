@@ -40,11 +40,8 @@ void BSTreeInt::sumaParnihINeparnih(BSTNodeInt* root,int* sumaParnih, int* sumaN
 //4. ??
 int GraphAsListsInt::doesConnectedComponentExists(int k)
 {
-	// Prvo proverimo da li postoji put između svih čvorova u grafu
 	if (!hasPathBetweenAllNodes())
 		return 0;
-
-	// Iteriramo kroz sve čvorove kako bismo pronašli povezane komponente
 	for (LinkedNodeInt* startNode = start; startNode != nullptr; startNode = startNode->next)
 	{
 		if (countNodesInConnectedComponent(startNode) > k)
@@ -58,12 +55,12 @@ int GraphAsListsInt::doesConnectedComponentExists(int k)
 
 int GraphAsListsInt::countNodesInConnectedComponent(LinkedNodeInt* startNode)
 {
-	setStatusForAllNodes(1); // Postavimo sve čvorove na nesetovane
+	setStatusForAllNodes(1); 
 	QueueAsArrayLinkedNodeInt queue(nodeNum);
 	queue.enqueue(startNode);
 	startNode->status = 2;
 
-	int count = 0; // Brojač čvorova u komponenti
+	int count = 0; 
 
 	while (!queue.isEmpty())
 	{
