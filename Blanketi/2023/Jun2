@@ -70,5 +70,5 @@ bool BSTreeInt:: checkNodeInSubtree(BSTNodeInt* root, int low, int high) {
 bool GraphAsListsInt::isCyclic()
 {
 	
-	return (nodeNum != topologicalOrderTravrsal());//ima u prez x1 16. slajd
+	return (nodeNum != topologicalOrderTravrsal());//ima u prezentaciji x1 16. slajd
 }
