@@ -165,7 +165,7 @@ int GraphAsListsInt::bridgeCount(LinkedNodeInt* first, LinkedNodeInt* last) {
 			{ // Ako je susedni čvor već u redu za posetu.
 				if (edge->dest->distance > temp->distance + edge->weight)//pogledaj skroz dole objasnjenje
 				{// Ako je udaljenost preko trenutnog puta manja, ažuriramo udaljenost i prethodnika.
-					pqju.update(edge->dest, temp->distance + edge->weight);//azuriranje udaljenosti u redu
+					pqju.update(edge->dest, temp->distance + edge->weight);//azuriranje udaljenosti u redu,stavlja se manja vrednost
 					edge->dest->prev = temp;
 				}
 			}
