@@ -1,0 +1,60 @@
+bool GraphAsListsInt::cycleThroughNode(int data)
+{
+	LinkedNodeInt* ptr = start;
+
+	// Dodajte proveru da li je graf prazan
+	if (nodeNum == 0 || ptr == nullptr)
+		return false; // ne postoji ciklus
+
+	// Pomoćna promenljiva za praćenje ciklusa
+	bool cycleFound = false;
+
+	// Iteracija kroz sve čvorove
+	while (ptr != nullptr)
+	{
+		if (ptr->status == 1) // Ako čvor nije posećen
+		{
+			if (bfsCycleThroughNode(ptr, data)) // Poziv BFS za proveru ciklusa
+			{
+				cycleFound = true;
+				break;
+			}
+		}
+		ptr = ptr->next;
+	}
+
+	// Vraćanje rezultata
+	return cycleFound;
+}
+bool GraphAsListsInt::bfsCycleThroughNode(LinkedNodeInt* startNode, int data)
+{
+	QueueAsArrayLinkedNodeInt queue(nodeNum);
+	queue.enqueue(startNode);
+	startNode->status = 2;
+
+	while (!queue.isEmpty())
+	{
+		LinkedNodeInt* ptr = queue.dequeue();
+		ptr->status = 3;
+
+		LinkedEdgeInt* pEdge = ptr->adj;
+		int count = 0; // Brojač ivica
+
+		while (pEdge != nullptr)
+		{
+			count++;
+			if (pEdge->dest->status == 1)
+			{
+				pEdge->dest->status = 2;
+				queue.enqueue(pEdge->dest);
+			}
+
+			if (pEdge->dest->node == data && count > 1)
+				return true;
+
+			pEdge = pEdge->link;
+		}
+	}
+
+	return false;
+}
