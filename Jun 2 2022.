@@ -163,7 +163,7 @@ int GraphAsListsInt::bridgeCount(LinkedNodeInt* first, LinkedNodeInt* last) {
 			}
 			else if (edge->dest->status == 2)
 			{ // Ako je susedni čvor već u redu za posetu.
-				if (edge->dest->distance > temp->distance + edge->weight)
+				if (edge->dest->distance > temp->distance + edge->weight)//pogledaj skroz dole objasnjenje
 				{// Ako je udaljenost preko trenutnog puta manja, ažuriramo udaljenost i prethodnika.
 					pqju.update(edge->dest, temp->distance + edge->weight);//azuriranje udaljenosti u redu
 					edge->dest->prev = temp;
@@ -184,3 +184,13 @@ int GraphAsListsInt::bridgeCount(LinkedNodeInt* first, LinkedNodeInt* last) {
 	// Vraćamo rezultat, ako smo stigli do 'first', inače -1.
 	return (temp == first) ? count : -1;
 }
+/*
+edge->dest->distance - Ovo je trenutna najmanja poznata udaljenost od izvorišnog čvora do čvora koji je označen kao 
+edge->dest. Na početku algoritma, ova udaljenost će biti postavljena na beskonačno za sve čvorove osim izvorišnog čvora, gde
+će biti postavljena na 0 (jer je udaljenost od izvorišta do sebe nula).
+temp->distance - Ovo je trenutna najmanja poznata udaljenost od izvorišnog čvora do čvora temp. 
+if (edge->dest->distance > temp->distance + edge->weight) proverava da li ukupna udaljenost od izvorišta do čvora edge->dest
+putem trenutnog čvora temp i grane edge (što je temp->distance + edge->weight) je manja od trenutno poznate udaljenosti do 
+čvora edge->dest. Ako jeste, to znači da smo pronašli kraći put do tog čvora i trebali bismo ažurirati njegovu udaljenost 
+i prethodnika. 
+*/
