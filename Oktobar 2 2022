@@ -60,3 +60,55 @@ BSTNodeInt* BSTreeInt::findSibling(BSTNodeInt* p)
 	}
 	return nullptr;
 }
+//4.
+
+/*
+U dinamicki implementiranom orijentisanom grafu napisati funkciju bool pathExists(Node* a,Node* b, Node* c,Node* d) koja odredjuje da li postoji 
+put izmedju cvorova a i b koji ukljucuje poteg izmedju poteg izmedju cvorova c i d
+moj nacin radi, drugacije je od lukinog
+*/
+bool pathExists(Node* a,Node* b, Node* c,Node* d)
+{
+	if(!a || !b || !c || !d)
+		return false;//ne postoje prosledjeni cvorovi
+	Edge* potegCD=edgeExists(c,d);
+	if(!potegCD)
+		return false;//poteg je nullptr, znaci ne postoji
+	Node* ptr=a;
+	Node* ptr2=b;
+	Queue queue(nodeNum);
+	ptr->status=2;
+	queue.enqueue(ptr);
+	bool visitedNodeB=false;//flag
+	bool visitedEdgeCD=false;//flag
+	while(!queue.isEmpty())
+	{
+		ptr=queue.dequeue();
+		ptr-status=3;
+		Edge* pEdge=ptr->adj;
+		while(pEdge!=nullptr && (!visitedNodeB || !visitedEdgeCD))
+		{
+			if(pEdge->dest->status==1)
+			{
+				pEdge->dest->status=2;
+				queue.enqueue(pEdge->dest);
+			}
+			if(pEdge==potegCD)
+				visitedEdgeCD=true;
+			if(pEdge->dest==ptr2)
+				visitedNodeB=true;
+			pEdge=pEdge->link;
+		}
+		ptr=ptr->next;
+	}
+	if(visitedNodeB && visitedEdgeCD)
+		return true;
+	return false;
+}
+Node* edgeExists(Node* a,Node* b)
+{
+	Edge* edge=a->adj;
+	while(edge!=nullptr && edge->dest!=b)
+		edge=edge->link;
+	return edge;
+}
