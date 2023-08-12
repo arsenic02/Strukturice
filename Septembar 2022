@@ -12,3 +12,103 @@ int BSTreeInt::countNodesInRange(BSTNodeInt* root, int min, int max)
 		count += countNodesInRange(root->left, min, max);
 	return count;
 }
+//4. radi manje vise
+//postoji i druga manje efikasna strategija sa nizovima
+/*
+posecene cvorove cuvam u nizu i onda da uporedim nizove. Prvi niz bi bio od cvora aiarport1 do airport end, drugi niz od cvora
+airport2 do airportEnd. Poredim elemente redom kroz niz i ako se poklapaju povecavam brojac, na kraju smanjim brojac za 1 jer 
+izmedju n cvorova uvek ima n-1 veza.
+*/
+int numOfSameFLights(Node* airport1,Node* airport2,Node* airportEnd)
+{
+   if(!airport1 || !airport2 || !airportEnd)
+	   return -1;
+   setStatusForAllNodes(1);
+    Node* ptr1=airport1;
+	Node* ptr2=airport2;
+	
+    PriorityQueue pQueue(nodeNum);
+    
+    ptr1->distance = 0; 
+	ptr2->distance=0;
+    priorityQueue.insert(ptr1);
+    ptr1->status = 2;
+	priorityQueue.insert(ptr2);
+    ptr2->status = 2; 	
+    while (!priorityQueue->isEmpty())
+    {
+        ptr1 = priorityQueue->removeFirst(); 
+        ptr1->status = 3; 
+		ptr2 = priorityQueue->removeFirst(); 
+        ptr2->status = 3; 
+       
+    }
+    int count=0;
+    Edge* pot1 = ptr1->adj; 
+	Edge* pot2 = ptr2->adj;
+	if(pot1=)
+    while (pot1 != nullptr && pot2 != nullptr && (pot1->dest!=airportEnd || pot2->dest!=airportEnd))
+    {
+		if(pot1->dest!=airportEnd)
+		{
+			if (pot1->dest->status == 1)//ako je status=1, pronasli smo skraceni put
+        {
+            pot1->dest->distance = ptr1->distance + pot1->weight; // Ažuriranje udaljenosti čvora 'dest'.
+            pot1->dest->status = 2; 
+            pot1->dest->prev = ptr; 
+            priorityQueue->insert(pot1->dest); // Ubacivanje čvora 'dest' u prioritetni red.
+        }
+        else if (pot1->dest->status == 2)
+			
+            if (pot1->dest->distance > ptr1->distance + pot1->weight)//da li je nova udaljenost preko trenutnog čvora kraća od prethodno zabeležene udaljenosti do dest
+            {
+                double newDistance = ptr1->distance + pot1->weight; // Računanje nove udaljenosti.
+                pot1->dest->prev = ptr1; // Ažuriranje prethodnika čvora 'dest'.
+                priorityQueue->update(pot1->dest, newDistance); // Ažuriranje se manja udaljenost
+                pot1->dest->distance = newDistance; // Ažuriranje udaljenosti čvora 'dest'.
+            }
+		}
+       
+		if(pot2->dest!=airportEnd)
+		{
+			if (pot2->dest->status == 1)//ako je status=1, pronasli smo skraceni put
+        {
+            pot2->dest->distance = ptr2->distance + pot2->weight; // Ažuriranje udaljenosti čvora 'dest'.
+            pot2->dest->status = 2; 
+            pot2->dest->prev = ptr2; 
+            priorityQueue->insert(pot2->dest); // Ubacivanje čvora 'dest' u prioritetni red.
+        }
+		else if (pot2->dest->status == 2)
+			
+            if (pot2->dest->distance > ptr2->distance + pot2->weight)//da li je nova udaljenost preko trenutnog čvora kraća od prethodno zabeležene udaljenosti do dest
+            {
+                double newDistance = ptr2->distance + pot2->weight; // Računanje nove udaljenosti.
+                pot2->dest->prev = ptr2; // Ažuriranje prethodnika čvora 'dest'.
+                priorityQueue->update(pot2->dest, newDistance); // Ažuriranje se manja udaljenost
+                pot2->dest->distance = newDistance; // Ažuriranje udaljenosti čvora 'dest'.
+            }
+		}
+		 
+		if(pot1==pot2)
+			count++;
+        pot1 = pot1->link;
+		pot2 = pot2->link; 
+    }
+	if(pot1->dest!=airportEnd && pot2->dest!=airportEnd)
+		return count;
+	return -1;//nisu dosli na isti aerodrom,izuzetak
+    
+}
+
+void setStatusForAllNodes(1)
+{
+	LinkedNodeInt* ptr = start;
+    while (ptr != nullptr)
+    {
+        ptr->status = 1; 
+        ptr->prev = nullptr; 
+        ptr->distance = numeric_limits<double>::max(); // Postavljanje udaljenosti čvora na beskonačno.
+        ptr = ptr->next; 
+    }
+}
+    
