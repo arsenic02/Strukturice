@@ -30,6 +30,17 @@ int BSTreeInt::obilaziCvorove(BSTNodeInt* ptr,int* counter)
 	return 1+countL+countR;
 }
 //4. malo ispravljen i dopunjen Luleksov kod
+/*
+Za pronalaženje puta sa najmanje presedanja između dva aerodroma, pristup pomoću BFS (pretrage u širinu) je prikladniji nego 
+Dijkstra algoritam. Dijkstra algoritam se obično koristi za pronalaženje najkraćeg puta u težinskom grafu, gde svaka grana ima
+numeričku težinu. U vašem slučaju, cilj je da se minimizuje broj presedanja, a ne težina puta.
+
+BFS je odgovarajuća opcija jer omogućava da se istraži susedstvo svakog čvora na istoj dubini pre nego što se pređe na sledeći
+nivo dubine. Ovo je korisno jer vam omogućava da sistematično istražujete sve opcije sa istim brojem presedanja pre nego što 
+pređete na sledeći broj presedanja.
+
+nije dobar ni dfs za ovakav zadatak
+*/
 int numberOfConnections(int startAero, int endAero) {
     GraphNode* temp = start;
     GraphNode* pStart = nullptr, * pEnd = nullptr;
