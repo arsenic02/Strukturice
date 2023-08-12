@@ -29,3 +29,61 @@ int BSTreeInt::obilaziCvorove(BSTNodeInt* ptr,int* counter)
 	countR=obilaziCvorove(ptr->right,counter);
 	return 1+countL+countR;
 }
+//4. malo ispravljen i dopunjen Luleksov kod
+int numberOfConnections(int startAero, int endAero) {
+    GraphNode* temp = start;
+    GraphNode* pStart = nullptr, * pEnd = nullptr;
+
+    while (temp != nullptr) {
+        temp->status = 1;
+        temp->prev = nullptr;
+        temp->distance = 0;
+
+        if (temp->key == startAero)
+            pStart = temp;
+        if (temp->key == endAero)
+            pEnd = temp;
+
+        temp = temp->next;
+    }
+
+    if (pStart == nullptr or pEnd == nullptr)
+        return -1; // Aerodromi nisu pronađeni
+
+    queue<GraphNode*> qju;
+    qju.push(pStart);
+    pStart->status = 2;
+
+    while (!qju.empty()) {
+        temp = qju.front();
+        qju.pop();
+        temp->status = 3;
+
+        GraphEdge* edge = temp->adj;
+        while (edge != nullptr) {
+            if (edge->dest->status == 1) {
+                edge->dest->status = 2;
+                edge->dest->prev = temp;
+
+                if (edge->dest == pEnd) {
+                    // Pronađen je ciljni aerodrom, prekidamo BFS
+                    break;
+                }
+
+                qju.push(edge->dest);
+            }
+            edge = edge->next;
+        }
+    }
+
+    // Brojanje presedanja
+    int numberOfStops = 0;
+    temp = pEnd;
+    while (temp->prev != nullptr) {
+        numberOfStops++;
+        temp = temp->prev;
+    }
+
+    return numberOfStops;
+}
+
