@@ -1,5 +1,58 @@
-//1. zad
+//1. zad radi
 
+int SwapPairs(int data1,int data2)
+{
+	LinkedNode* ptr1=findNode(data1);
+	LinkedNode* ptr2=findNode(data2);
+	LinkedNode* ptr1Prev=findPrevNode(start,ptr1);//prvi parametar od kog pocinje trazenje, drugi parametar da se trazi prethodnik od ptr1
+	if(!ptr1))
+		return 0;
+	bool swap=true;//menja od data1 do data2
+	if(!ptr2)
+		swap=false;//menja od data1 do kraja liste
+	int toRet=0;
+	if(swap)
+	{
+		//ptr1Next=ptr1->next;
+		while(ptr1!=ptr2)
+		{
+			//ptr1Prev=findPrevNode(start,ptr1);
+			zameniParove(ptr1Prev,ptr1,ptr1->next);
+			toRet++;
+			ptr1Prev=ptr1->next;
+			ptr1=ptr1->next->next;//posto  su zamenjena 2 suseda mora da se dodje do 3 cvora
+		}
+	}
+	else
+	{
+		while(ptr1!=nullptr)
+		{
+			//ptr1Prev=findPrevNode(start,ptr1);
+			zameniParove(ptr1Prev,ptr1,ptr1->next);
+			toRet++;
+			ptr1Prev=ptr1->next;
+			ptr1=ptr1->next->next;
+		}
+	}
+	return toRet;
+}
+
+bool zameniParove(LinkedNode* ptr1Prev,LinkedNode* ptr1,LinkedNode* ptr1Next)
+{
+	ptr1->next=ptr1Next->next;
+	ptr1Next->next=ptr1;
+	ptr1Prev->next=ptr1Next;
+	
+}
+bool LinkedNode* findPrevNode(LinkedNode* ptr,LinkedNode* ptr1)
+{
+	while(ptr->next!=ptr1 && ptr->next!=nullptr)
+	{
+		ptr=ptr->next;
+	}
+	return ptr;
+}
+//ovaj ne radi valjda
 int LList::SwapPairs(int data1, int data2)
 {
 	//mozda treba metoda koja ispituje parnost liste
