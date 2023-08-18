@@ -1,3 +1,61 @@
+//1. imam i ja svoje ali je malo neefikasno
+bool deleteSublist(LinkedNode* sublist) {
+    if (sublist == nullptr) {
+        return false;
+    }
+
+    LinkedNode* trenutni = start;  // Pretpostavka da je `start` glava glavne povezane liste
+
+    while (trenutni != nullptr) {
+        if (jePodudaranje(trenutni, sublist)) {
+            obrisiPodudarajucuPodlistu(trenutni, sublist);
+            return true; // Pretpostavka je da želite da obrišete samo jedno pojavljivanje podliste
+        }
+        trenutni = trenutni->next;
+    }
+
+    return false; // Podlista nije pronađena
+}
+
+bool jePodudaranje(LinkedNode* lista1, LinkedNode* lista2) {
+    while (lista1 != nullptr && lista2 != nullptr) {
+        if (lista1->data != lista2->data) {
+            return false;
+        }
+        lista1 = lista1->next;
+        lista2 = lista2->next;
+    }
+    return lista2 == nullptr; // Ako je lista2 dostigla kraj, to znači da su svi elementi bili podudarajući
+}
+
+void obrisiPodudarajucuPodlistu(LinkedNode* &start, LinkedNode* podlista) {
+    LinkedNode* prethodni = nullptr;
+    LinkedNode* trenutni = start;
+    LinkedNode* podlistaTrenutni = podlista;
+
+    while (podlistaTrenutni != nullptr) {
+        if (trenutni == nullptr || trenutni->data != podlistaTrenutni->data) {
+            return; // Nešto nije u redu, podlista nije pronađena
+        }
+        podlistaTrenutni = podlistaTrenutni->next;
+        prethodni = trenutni;
+        trenutni = trenutni->next;
+    }
+
+    // Ako smo stigli ovde, podlista je pronađena, obrišite je
+    if (prethodni == nullptr) {
+        start = trenutni; // Ažurirajte početak glavne liste
+    } else {
+        prethodni->next = trenutni;
+    }
+
+    while (podlista != nullptr) {
+        LinkedNode* privremeni = podlista;
+        podlista = podlista->next;
+        delete privremeni;
+    }
+}
+
 //3. AI, imam i svoje slicno ali ne radi najbolje
 BSTNodeInt* BSTreeInt::maxHeightDiff()
 {
