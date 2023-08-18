@@ -1,3 +1,44 @@
+//1.
+/*
+1. napisati fju koja u jednostruko spregnutu lancanu listu, bez pokazivaca na rep liste, uredjenu u rastuci redosled
+dodaje element sa info delom br na odgovarajuce mesto u listi tako da lista odrzava uredjenje. Ukoliko element sa info delom
+jednakim vrednosti br vec postoji u listi, taj element se onda uklanja iz liste i nista se ne dodaje u listu.
+jel doba rkod za ovaj zadatak, pisi na srpskom
+*/
+void injectOrRemove(int br)
+{
+	LinkedNode* ptr=findNode(br);
+	if(ptr!=nullptr)
+	{
+		LinkedNode* prev=nullptr;
+		while(prev->next!=ptr && prev!=nullptr)
+		{
+			prev=ptr;
+			ptr=ptr->next;
+		}
+		if(prev)
+		{
+			prev->next=ptr->next;
+		}
+		else
+			head=ptr->next;
+		delete ptr;
+		ptr=nullptr;
+	}
+	else
+	{
+		prev=nullptr;
+		LinkedNode* pok=head;
+		ptr=new LinkedNode(br);
+		while(pok!=nullptr && br<pok->info)
+		{
+			prev=pok;
+			pok=pok->next;
+		}
+		prev->next=ptr;
+		ptr->next=pok->next;
+	}
+}
 //4.
 int reachableInNHoops(GraphNode* a, int n) {
 //bolje red/stek za ovakve zadatke, dijkstra samo kad se trazi najkraci put!!!
