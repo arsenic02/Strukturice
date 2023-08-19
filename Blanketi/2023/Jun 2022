@@ -54,41 +54,33 @@ unsigned int HashTable::g(unsigned int key)
 	return ak>>(32-(int)log2(getLength()));
 }
 void withdraw(const char* key) {
-    uint index = h(key); 
-
-    if (table[index].status != 2)
-        return;
-
-    uint prev = -1; // Indeks prethodnog elementa inicijalno postavljen na -1
-
-    // Pretraga dok se ne nađe ključ ili dođe do kraja niza
-    while (index != -1 and index != 0 and strcmp(table[index].getKey(), key) != 0) {
-        prev = index;
-        index = table[index].next; // Prelazak na sledeći element u lancu
-    }
-
-    // Brisanje iz tablice
-    if (prev == -1 and table[index].next == -1) {
-        table[index].status = 1; // Promena statusa na slobodno (1)
-    }
-    else if (prev == -1 and table[index].next != -1) {
-        prev = index;
-        index = table[index].next; // Prelazak na sledeći element
-        table[prev] = table[index]; // Kopiranje sledećeg elementa preko trenutnog
-        table[index].next = lrmp; // Postavljanje sledećeg elementa kao poslednji oslobođeni
-        table[index].status = 1; // Promena statusa na slobodno (1)
-        lrmp = index; // Ažuriranje poslednjeg oslobođenog
-    }
-    else {
-        table[prev].next = table[index].next; // Povezivanje prethodnog elementa sa sledećim
-        table[index].status = 1; // Promena statusa na slobodno (1)
-        table[index].next = lrmp; // Postavljanje sledećeg elementa kao poslednji oslobođeni
-        lrmp = index; // Ažuriranje poslednjeg oslobođenog
-    }
-
-    count -= 1; // Smanjenje broja elemenata u tabeli za 1
+	uint index = h(key);
+	if (table[index].status != 2)
+		return;
+	uint prev = -1;//oznacava da se prvi element brise
+	while (index != -1 and index != 0 and strcmp(table[index].getKey(), key) != 0) {
+		prev = index;
+		index = table[index].next;
+	}
+	if (prev == -1 and table[index].next == -1) {//brisanje prvog i jedinog elementa u listi
+		table[index].status = 1;
+	}
+	else if (prev == -1 and table[index].next != -1) {//brisanje prvog elementa u listi sa vise elemenata
+		prev = index;
+		index = table[index].next;
+		table[prev] = table[index];
+		table[index].next = lrmp;
+		table[index].status = 1;
+		lrmp = index;
+	}
+	else {//brisanje srednjeg ili poslednjeg elementa u listi
+		table[prev].next = table[index].next;
+		table[index].status = 1;
+		table[index].next = lrmp;
+		lrmp = index;
+	}
+	count -= 1;
 }
-
 //4.
 int GraphAsListsInt::getMaxConnectionsDisjointSubgraph()
 {
