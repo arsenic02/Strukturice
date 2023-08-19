@@ -1,4 +1,4 @@
-//3. 
+//3. treci
 BSTNodeInt* BSTreeInt::getNNode()//okt2 2021
 {
 	return getNNode(root);
