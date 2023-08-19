@@ -78,3 +78,46 @@ void LList::SortList()
 		ptr = ptr->next;
 	}//problem posto su 5 i 1 zamenili mesta a 5 je bio pretposlednji element i onda se samo 2 puta pozove MinToHead
 }
+//2.
+unsigned int HashTable::h(char* key)
+{
+	return g(f(key));
+}
+
+unsigned int HashTable::f(char* key)
+{
+	//TODO:Implementirati funkciju koja prevodi char u unsigned int
+	unsigned int res = 0;
+	for (int i = 11; i > 6; i--)
+		res = res << 7 ^ key[i];
+	return res;
+}
+
+unsigned int HashTable::g(unsigned int key)
+{
+	//TODO:Implementirati funkciju koja prevodi unsigned int u [0...M-1]
+	const unsigned int c1 = 1;  // Prva konstanta za modifikaciju, nema na netu samo AI
+    const unsigned int c2 = 3;  // Druga konstanta za modifikaciju
+    return (key + c1 * i + c2 * i * i) % m;
+}
+unsigned int OpenScatterTable::findMatch(char* key)
+{
+	unsigned int hash = h(key);
+	for (unsigned int i = 0; i < m; i++)
+	{
+		unsigned int probe = hash + c(i);
+		if (array[probe].status == 0) return -1;//da bi bacio exception u withdraw
+		if (array[probe].isEqualKey(key)) return probe;
+	}
+	return ~0U;//najveci 32b broj
+}
+
+ScatterObject OpenScatterTable::find(char* key)
+{
+	unsigned int probe = findMatch(key);
+	if (probe != ~0U)
+		return this->array[probe];
+	else
+		return ScatterObject();
+
+}
