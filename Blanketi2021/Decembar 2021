@@ -1,3 +1,87 @@
+//2. deo zadatka 
+#include <iostream>
+
+// Struktura za čvor liste
+struct Node {
+    std::string data;
+    Node* next;
+
+    Node(const std::string& value) : data(value), next(nullptr) {}
+};
+
+// Funkcija za dodavanje čvora na početak liste
+void pushToFront(Node*& head, const std::string& value) {
+    Node* newNode = new Node(value);
+    newNode->next = head;
+    head = newNode;
+}
+
+// Funkcija za ispis liste
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        std::cout << current->data << " ";
+        current = current->next;
+    }
+    std::cout << std::endl;
+}
+
+// Funkcija za premestanje elementa na početak liste
+void moveToFront(Node*& head, const std::string& target) {
+    if (head == nullptr) {
+        return; // Lista je prazna
+    }
+
+    if (head->data == target) {
+        return; // Ciljni element je već na početku
+    }
+
+    Node* prev = nullptr;
+    Node* current = head;
+
+    while (current != nullptr && current->data != target) {
+        prev = current;
+        current = current->next;
+    }
+
+    if (current == nullptr) {
+        return; // Element nije pronađen
+    }
+
+    prev->next = current->next;
+    pushToFront(head, current->data);
+    delete current;
+}
+
+int main() {
+    Node* head = nullptr;
+
+    // Dodavanje elemenata u listu
+    pushToFront(head, "sinonim3");
+    pushToFront(head, "sinonim2");
+    pushToFront(head, "sinonim1");
+    pushToFront(head, "nepozeljan");
+    pushToFront(head, "sinonim4");
+
+    std::cout << "Originalna lista: ";
+    printList(head);
+
+    // Premestanje "nepozeljan" na početak
+    moveToFront(head, "nepozeljan");
+
+    std::cout << "Lista nakon premestanja: ";
+    printList(head);
+
+    // Oslobađanje resursa
+    while (head != nullptr) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+
+    return 0;
+}
+
 //4. Luleks ima sitne greske, ovo je moj ispravljen kod
 void GraphAsListsInt:: countIns()// dec 2021 Brojanje ulaznih grana
 {
