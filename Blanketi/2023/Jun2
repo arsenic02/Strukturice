@@ -1,3 +1,4 @@
+//1.
 bool LList::moveSectionToHead(int start, int end)//jun2 2023 1. zad
 {
 	if (isInList(start) && isInList(end))
@@ -34,7 +35,56 @@ napravi metodu koaj u jednostrukkoj lancanoj listi pronalazi prvo pojavljivanje 
 zavrsava se cvorom end i premesta je na pocetak liste, nije dozvoljeno koristiti podrazumevane metode implementacije liste.
 Vodi racuna o efikasnosti
 */
+//2.
+//operater radi kvadratno trazenje
+unsigned int HashTable::h(char* key)
+{
+	return g(f(key));
+}
 
+unsigned int HashTable::f(char* key,int i)
+{
+	return key+i*i;
+}
+
+unsigned int HashTable::g(unsigned int key)
+{
+	
+	return key%m;
+}
+//ministarstvo koristi drugu tehniku trazenja
+//key=jmbg
+unsigned int HashTable::h(char* key)
+{
+	return g(f(key));
+}
+
+unsigned int HashTable::f(char* key,int i)
+{
+	int res=0;
+	for(int i=0;i<=11;i++)
+	{
+		res=res<<7^key[i];
+	}
+	return res;
+}
+
+unsigned int HashTable::g(unsigned int key)
+{
+	const unsigned int a = 2654435769;
+	unsigned long long ak = a * key;
+	return ak>>(32-(int)log2(getLength()));
+}
+
+ScatterObject OpenScatterTable::find(char* key)
+{
+	unsigned int probe = findMatch(key);
+	if (probe != ~0U)
+		return this->array[probe];
+	else
+		return ScatterObject();
+
+}
 //3. trebalo bi da je dobar kod ali nzm zasto zeza kod runovanja
 int BSTreeInt::countSmaller(int d) {
 	int counter = 0;
