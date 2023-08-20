@@ -1,4 +1,4 @@
-//1.
+//1. zad
 bool Stack::isOperation(char c) {
 	return (c == '+' || c == '-' || c == '*' || c == '/');
 }
