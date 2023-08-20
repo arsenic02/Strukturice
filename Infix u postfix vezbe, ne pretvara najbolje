@@ -1,0 +1,52 @@
+char* Stack::prevediInfixUPostfix(char* exp)//ne pretvara najbolje
+{
+	Stack stack(strlen(exp)+1);
+	char* niz = new char [strlen(exp)+1];
+
+	int j = 0;
+	for (int i = 0; exp[i] != '\0'; i++)
+	{
+		if (exp[i] == '(')
+		{
+			stack.push(exp[i]);
+		}
+		else if (exp[i] >= 'A' && exp[i] <= 'z')
+		{
+			niz[j] = exp[i];
+			j++;
+		}
+		else if (isOperation(exp[i]))
+		{
+			if (isOperation(stack.getTop()))
+			{
+				stack.pop();
+			}
+			stack.push(exp[i]);
+		}
+		else if (exp[i] == ')')
+		{
+			/*//moze i ovako
+			do
+			{
+				char c;
+				c=stack.pop();
+				if (isOperation(c))
+				{
+					niz[j] = c;
+					j++;
+				}
+			} while (!stack.isEmpty() && stack.getTop() != '(' );*/
+			while (!stack.isEmpty() && stack.getTop() != '(') {
+				char c = stack.pop();
+				if (isOperation(c)) {
+					niz[j] = c;
+					j++;
+				}
+			}
+
+				
+		}
+	}
+	niz[j] = '\0';
+	return niz;
+}
