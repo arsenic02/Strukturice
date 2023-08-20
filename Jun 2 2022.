@@ -25,23 +25,29 @@ LList* LList::SplitOrMove()
 	return novaLista;
 }
 //////////////////////////////////////////////////////////////////////////////
-//3. zadatak
+//3. zadatak moj nacin dobar je
 int brojCvorova(int keyMin, double valueMin) {
-	return brojCvorova(root, keyMin, valueMin, false);
-}// ancestor - predak
-int brojCvorova(BSTNode* root, int keyMin, double valueMin, bool ancestorExists) {
-	if (root == 0)
-		return 0;
-	int count = 0;
-	if (root->key > keyMin and ancestorExists)//Ako oba uslova su ispunjena, to znači da je trenutni čvor unuk nekog prethodnog čvora koji takođe zadovoljava uslov ključa, pa se u ovom slučaju uvećava brojač za 1 
-		count += 1 + brojCvorova(root->left, keyMin, valueMin, true) + brojCvorova(root->right, keyMin, valueMin, true);
-	//ovaj drugi  uslov mi nelogicno za not ancestorExists???, dodavanje 1???
-	else if (not ancestorExists and root->value > valueMin)// da li cvor nema prethodnika u smislu da nema prethodnike koji zadovoljavaju uslov value > valueMin
-		count += brojCvorova(root->left, keyMin, valueMin, true) + brojCvorova(root->right, keyMin, valueMin, true);
-	else
-		count += brojCvorova(root->left, keyMin, valueMin, false) + brojCvorova(root->right, keyMin, valueMin, false);
-	return count;
+    int count = 0;
+    Node* ptr = root;
+    if (!ptr)
+        return 0;
+    return brojCvorova(keyMin, valueMin, ptr, count);
 }
+
+int brojCvorova(int keyMin, double valueMin, Node* ptr, int& count) {
+    if (!ptr)
+        return 0;
+    
+    int leftCount = brojCvorova(keyMin, valueMin, ptr->left, count);
+    int rightCount = brojCvorova(keyMin, valueMin, ptr->right, count);
+
+    if (ptr->key > keyMin && predak(valueMin, ptr)) {
+        count++;
+    }
+
+    return leftCount + rightCount + count;
+}
+
 //4.
 void GraphAsListsInt::bfs(LinkedNodeInt* node)
 {
