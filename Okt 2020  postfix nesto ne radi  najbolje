@@ -1,0 +1,36 @@
+double Stack::calcPostfix(const char* exp)
+{
+	Stack operations(20);//2 steka se koriste
+	Stack operands(20);
+	bool operation = false;
+	for (int i = 0; exp[i] != '\0'; i++) //dok se ne dodje do kraja niza
+	{
+		if (isOperation(exp[i])) //kada se naidje na operator racuna se operacija
+		{//u odnosu na prefix zamena ovog slucaja sa 3.
+			char op = exp[i];
+			double op1 = operands.pop();
+			double op2 = operands.pop();//trenutni operand
+			//double op2 = operands.pop();//ne moze baca exception
+			operands.push(calc(op, op1, op2));
+			operation = true;
+			//
+			
+		}
+		else if (operands.isEmpty() || !operation) {//kada se naidje na operand a pre njega je bio operator
+			operands.push(exp[i] - 48);//pretvaranje u broj posto je tipa char
+			operation = false;
+		}
+		else {//kada se naidje na operand, i pre njega je bio operand
+			operations.push(exp[i]);
+			operation = false;
+		}
+	}
+
+	if (!operations.isEmpty())
+	{
+		double op2 = operands.pop();
+		double op1 = operands.pop();
+		return calc(operations.pop(), op1, op2);
+	}
+	return operands.pop();
+}
