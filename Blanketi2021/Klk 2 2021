@@ -1,4 +1,36 @@
 //3. zadatak moj naci radi
+
+int deleteAllLeftLeafs(Node* root)
+{
+	if(!root)
+		return 0;
+	int count=0;
+	return deleteAllLeftLeafs(root,count);
+}
+int deleteAllLeftLeafs(Node* root,int &count)
+{
+	if(!root)
+		return 0;
+	if(isLeaf(root->left))
+	{
+		count++;
+		delete root->left;
+		root->left=nullptr;
+	}
+	deleteAllLeftLeafs(root->left,&count);
+	deleteAllLeftLeafs(root->right,&count);
+	return count;
+}
+bool isLeaf(Node* root)
+{
+	if(!root)
+		return false;
+	if(!root->left && !root->right)
+		return true;
+	return false;
+}
+///////////////////////
+//2. moj nacin radi
 int deleteALlLeftLeafs(BSTNodeInt* root);//kol2 2021
 	int obilazakStabla(BSTNodeInt* root,int *delNodes);
 
