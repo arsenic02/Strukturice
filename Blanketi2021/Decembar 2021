@@ -81,7 +81,37 @@ int main() {
 
     return 0;
 }
-
+//3. AI  kazze da ima mozda greske oko prenosa parametara medju metodama
+Node* NadjiObrok(Node* root,Node* toRet,int& max)
+{
+	if(!root)
+		return nullptr;
+	int left=countNodes(root->left);
+	int right=countNodes(root->right);
+	int diff=abs(left-right);
+	if(diff>max)
+	{
+		max=diff;
+		toRet=root;
+	}
+	NadjiObrok(root->left,toRet,&max);
+	NadjiObrok(root->right,toRet,&max);
+	return toRet;
+}
+Node* NadjiObrok(Node* root)
+{
+	if(!root)
+		return nullptr;
+	int max=0;
+	Node* toRet=nullptr;
+	return NadjiObrok(root,toRet,&max);
+}
+int countNodes(Node* root)
+{
+	if(!root)
+		return 0;
+	return 1+countNodes(root->left)+countNodes(root->right);
+}
 //4. Luleks ima sitne greske, ovo je moj ispravljen kod
 void GraphAsListsInt:: countIns()// dec 2021 Brojanje ulaznih grana
 {
