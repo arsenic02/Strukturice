@@ -81,6 +81,35 @@ void withdraw(const char* key) {
 	}
 	count -= 1;
 }
+//3. radi moj nacin
+bool isPerfect()
+{
+	if(root==nullptr)
+		return 0;
+	return isPerfect(root);
+}
+bool isPerfect(Node* root)
+{
+	if(root==nullptr)
+		return false;
+	int leftSubtree=isPerfect(root->left,0);
+	int rightSubtree=isPerfect(root->right,0);
+	int diff=abs(leftSubtree-rightSubtree);
+	if(diff!=-1)
+		return false;
+	isPerfect(root->left);
+	isPerfect(root->right);
+	return true;
+}
+int isPerfect(Node* root,int& count)
+{
+	if(root==nullptr)
+		return 0;
+	count++;
+	isPerfect(root->left,&count);
+	isPerfect(root->right,&count);
+	return count;
+}
 //4.
 int GraphAsListsInt::getMaxConnectionsDisjointSubgraph()
 {
