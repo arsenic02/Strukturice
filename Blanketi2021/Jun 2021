@@ -1,20 +1,36 @@
-//3. 
-int BSTreeInt::countSL(BSTNodeInt* root)
+//3. moj nacin radi
+/*
+napisi funkciju koja vraca broj cvorova za koje vazi da je zbir elemenata njihovog levog podstabla veci od zbira
+elemenata desnog podstabla
+kazi jel dobar kod
+*/
+int countSL()
 {
-	if(root == nullptr)
-		countKeys(root);
-	int countLeft = countKeys(root->left);
-	int countRight = countKeys(root->right);
-	int count = 0;
-	if (countLeft > countRight)
-		count++;
-	return count + countSL(root->left) + countSL(root->right);
-}
-int BSTreeInt::countKeys(BSTNodeInt* root)
-{
-	if (root == 0)
+	if(!root)
 		return 0;
-	return root->key + countKeys(root->left) + countKeys(root->right);
+	int count=0;
+	return countSL(root,&count);
+}
+int countSL(Node* root,int &count)
+{
+	if(!root)
+		return 0;
+	int sumL=zbir(root->left,0);
+	int sumR=zbir(root->right,0);
+	if(sumL>sumR)
+		count++;
+	countSL(root->left,&count);
+	countSL(root->right,&count);
+	return count;
+}
+int zbir(Node* root,int& suma)
+{
+	if(root==nullptr)
+		return 0;
+	suma+=root->key;
+	zbir(root->left,&suma);
+	zbir(root->right,&suma);
+	return suma;
 }
 
 //4. 
