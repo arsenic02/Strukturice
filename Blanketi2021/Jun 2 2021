@@ -39,6 +39,34 @@ void injectOrRemove(int br)
 		ptr->next=pok->next;
 	}
 }
+//3.  radi moj nacin
+Node* findNodeWithLargestRightSubtree()
+{
+	if(root==nullptr)
+		return nullptr;
+	return function(root,max,nullptr);
+}
+
+Node* function(Node* root,int&max,Node* toRet)
+{
+	if(root==nullptr)
+		return nullptr;
+	int curr=countNodes(root->right);
+	if(curr>max)
+	{
+		toRet=root;
+		max=curr;
+	}
+	function(root->left,&max);
+	function(root->right,&max);
+	return toRet;
+}
+
+int countNodes(Node* root) {
+	if(root==nullptr)
+		return nullptr;
+	return 1 + countNodes(root->left) + countNodes(root->right);
+}
 //4.
 int reachableInNHoops(GraphNode* a, int n) {
 //bolje red/stek za ovakve zadatke, dijkstra samo kad se trazi najkraci put!!!
