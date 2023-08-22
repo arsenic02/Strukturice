@@ -128,6 +128,7 @@ void GraphAsListsInt:: countIns()// dec 2021 Brojanje ulaznih grana
 		while (edge != nullptr)
 		{
 			edge->dest->distance++;// Povecanje broja ulaznih grana za odredisni cvor
+			//Ovo se može koristiti kako bi se pratio broj ključeva potrebnih za otvaranje određene sobe.
 			edge = edge->link;
 		}
 		temp = temp->next;
