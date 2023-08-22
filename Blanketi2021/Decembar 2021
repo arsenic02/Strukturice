@@ -154,8 +154,8 @@ void GraphAsListsInt::obidjiSveMoguce(int start)
 		LinkedEdgeInt* edge = temp->adj;
 		while (edge != nullptr)
 		{
-			edge->dest->distance--;// Smanjenje broja ulaznih grana za odredisni cvor
-			if (edge->dest->distance == 0 && edge->dest->status == 1)// Ako su ulazne grane nule i cvor nije posecen
+			edge->dest->distance--;// Smanjenje broja ulaznih grana za odredisni cvor, smanjuje se potreban broj kljuceva da se otkljuca soba
+			if (edge->dest->distance == 0 && edge->dest->status == 1)// Ako su ulazne grane nule i cvor nije posecen, imamo sve kljueve za otkljuavanje sobe
 				stek.push(edge->dest);// Stavljanje odredisnog cvora na stek
 			edge = edge->link;
 		}
