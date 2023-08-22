@@ -26,7 +26,7 @@ bool isLeaf(Node* root)
 {
 	return root != 0 and root->left == 0 and root->right == 0;
 }
-//4.
+//4. zadatak
 int getTownName() {
 	GraphNode* temp = start;
 	while (temp != 0) {
