@@ -19,7 +19,8 @@ char* Stack::prevediInfixUPostfix(char* exp)//ne pretvara najbolje
 		{
 			if (isOperation(stack.getTop()))
 			{
-				stack.pop();
+				niz[j]=stack.pop();
+				j++;
 			}
 			stack.push(exp[i]);
 		}
