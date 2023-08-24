@@ -31,6 +31,35 @@ void LList::GroupElements()
 			ptr2 = ptr1->next;
 	}
 }
+//1. zadatak 2. nacin
+void groupElements()
+{
+	if(!head)
+		return;
+	LinkedNode* ptr=head;
+	LinkedNode* ptr2=nullptr;
+	LinkedNode* prevPtr2=nullptr;
+	while(ptr!=nullptr)
+	{
+		ptr2=ptr->next;//da nema uporedjivanja sam sa sobom
+		prevPtr2=ptr;
+		int count=0;
+		while(ptr2!=nullptr)
+		{
+			if(ptr->info==ptr2->info)
+			{
+				prevPtr2->next=ptr2->next;
+				ptr2->next=ptr->next;//prelancavanje ova 3 reda
+				ptr->next=ptr2;
+				
+				count++;
+				ptr=ptr->next;//optimizacija ako ima jos neki duplikat
+			}
+			ptr2=ptr2->next;
+		}
+		ptr=ptr->next;
+	}
+}
 //2.
 unsigned int HashTable::h(char* key)
 {
