@@ -85,7 +85,40 @@ ScatterObject OpenScatterTable::find(char* key)
 		return ScatterObject();
 
 }
-//3. trebalo bi da je dobar kod ali nzm zasto zeza kod runovanja
+//3.
+Node* maxHeightDiff()
+{
+	if(!root)
+		return nullptr;
+	int max=0;
+	int diff=0;
+	return maxHeightDiff(root,&max,&diff);
+}
+Node* maxHeightDiff(Node* root,int &max,int& diff)
+{
+	if(!root)
+		return nullptr;
+	Node* savePtr;
+	int left=height(root->left);
+	int right=height(root->right);
+	diff=abs(left-right);
+	if(diff>max)
+	{
+		max=diff;
+		savePtr=root;
+	}
+	
+	maxHeightDiff(root->left,&max,&diff);
+	maxHeightDiff(root->right,&max,&diff);
+	return savePtr;
+}
+int height(Node* root)
+{
+	if(!root)
+		return 0;
+	return 1+ max(height(root->left),height(root->right));
+}
+//3. trebalo bi da je dobar kod ali nzm zasto zeza kod runovanja to je drugi nacin
 int BSTreeInt::countSmaller(int d) {
 	int counter = 0;
 	return countSmaller(d, root, counter);
