@@ -25,7 +25,7 @@ LList* LList::SplitOrMove()
 	return novaLista;
 }
 //////////////////////////////////////////////////////////////////////////////
-//3. zadatak moj nacin dobar je
+//3. zadatak moj nacin dobar je ??
 int brojCvorova(int keyMin, double valueMin) {
     int count = 0;
     Node* ptr = root;
@@ -47,7 +47,14 @@ int brojCvorova(int keyMin, double valueMin, Node* ptr, int& count) {
 
     return leftCount + rightCount + count;
 }
-
+bool predak(double valueMin,Node* ptr)
+{
+	if(!ptr) return false;
+	if(ptr->value>valueMin)
+		return true;
+	return predak(valueMin,ptr->left);
+	return predak(valueMin,ptr->right);
+}
 //4.
 void GraphAsListsInt::bfs(LinkedNodeInt* node)
 {
